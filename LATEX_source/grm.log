@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.12.0 (MiKTeX 20.6) (format=lualatex 2020.6.29)  14 OCT 2020 14:19
+This is LuaHBTeX, Version 1.12.0 (MiKTeX 20.6) (format=lualatex 2020.6.29)  16 OCT 2020 09:26
  system commands enabled.
 **grm.tex
 (./grm.tex
@@ -1028,25 +1028,93 @@ LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <6> not available
 (Font)              Font shape `TU/lmss/m/sl' tried instead on input line 29.
  [1
 
-{C:/Users/Adwait/AppData/Local/MiKTeX/pdftex/config/pdftex.map}] [2
+{C:/Users/Adwait/AppData/Local/MiKTeX/pdftex/config/pdftex.map}]
+<figures/fukushima_disaster.jpg, id=22, 597.432pt x 444.2196pt>
+File: figures/fukushima_disaster.jpg Graphic file (type jpg)
+<use figures/fukushima_disaster.jpg>
+Package luatex.def Info: figures/fukushima_disaster.jpg  used on input line 78.
+(luatex.def)             Requested size: 138.2795pt x 102.81229pt.
+<figures/Essaim_constellation.jpg, id=23, 504.9264pt x 366.168pt>
+File: figures/Essaim_constellation.jpg Graphic file (type jpg)
+<use figures/Essaim_constellation.jpg>
+Package luatex.def Info: figures/Essaim_constellation.jpg  used on input line 78
+.
+(luatex.def)             Requested size: 100.98349pt x 73.2323pt.
+<figures/truck_platoon.jpg, id=24, 351.56343pt x 327.09703pt>
+File: figures/truck_platoon.jpg Graphic file (type jpg)
+<use figures/truck_platoon.jpg>
+Package luatex.def Info: figures/truck_platoon.jpg  used on input line 78.
+(luatex.def)             Requested size: 115.70514pt x 107.657pt.
+<figures/Dyson_swarm.png, id=25, 1027.84pt x 770.88pt>
+File: figures/Dyson_swarm.png Graphic file (type png)
+<use figures/Dyson_swarm.png>
+Package luatex.def Info: figures/Dyson_swarm.png  used on input line 78.
+(luatex.def)             Requested size: 102.79001pt x 77.09251pt.
+ [2
 
-]
-<figures/Vanderpol_LPV.png, id=28, 1588.43437pt x 907.89188pt>
-File: figures/Vanderpol_LPV.png Graphic file (type png)
-<use figures/Vanderpol_LPV.png>
-Package luatex.def Info: figures/Vanderpol_LPV.png  used on input line 55.
-(luatex.def)             Requested size: 215.10196pt x 122.93414pt.
+<./figures/fukushima_disaster.jpg><./figures/Essaim_constellation.jpg><./figures
+/truck_platoon.jpg><./figures/Dyson_swarm.png>]
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 96.
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <7> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 96.
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <5> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 96.
  [3
 
-<./figures/Vanderpol_LPV.png>]
-<slides_handwritten/slide1.jpg, id=36, 541.64859pt x 389.95688pt>
-File: slides_handwritten/slide1.jpg Graphic file (type jpg)
-<use slides_handwritten/slide1.jpg>
-Package luatex.def Info: slides_handwritten/slide1.jpg  used on input line 62.
-(luatex.def)             Requested size: 307.28987pt x 221.23642pt.
-[4
+] [4
 
-<./slides_handwritten/slide1.jpg>] [5
+]
+<figures/cons_decoupled.jpg, id=47, 450.18187pt x 262.35516pt>
+File: figures/cons_decoupled.jpg Graphic file (type jpg)
+<use figures/cons_decoupled.jpg>
+Package luatex.def Info: figures/cons_decoupled.jpg  used on input line 124.
+(luatex.def)             Requested size: 207.82118pt x 121.11516pt.
+ [5
+
+<./figures/cons_decoupled.jpg>]
+<figures/Flocking_decoupled.jpg, id=54, 440.39531pt x 247.67531pt>
+File: figures/Flocking_decoupled.jpg Graphic file (type jpg)
+<use figures/Flocking_decoupled.jpg>
+Package luatex.def Info: figures/Flocking_decoupled.jpg  used on input line 137.
+
+(luatex.def)             Requested size: 215.3588pt x 121.11516pt.
+ [6
+
+<./figures/Flocking_decoupled.jpg>]
+<figures/cons_coupled.jpg, id=60, 434.74922pt x 249.18094pt>
+File: figures/cons_coupled.jpg Graphic file (type jpg)
+<use figures/cons_coupled.jpg>
+Package luatex.def Info: figures/cons_coupled.jpg  used on input line 150.
+(luatex.def)             Requested size: 211.31084pt x 121.11516pt.
+ [7
+
+<./figures/cons_coupled.jpg>]
+<figures/Flocking_coupled.jpg, id=66, 437.76047pt x 266.87202pt>
+File: figures/Flocking_coupled.jpg Graphic file (type jpg)
+<use figures/Flocking_coupled.jpg>
+Package luatex.def Info: figures/Flocking_coupled.jpg  used on input line 163.
+(luatex.def)             Requested size: 198.66698pt x 121.11516pt.
+ [8
+
+<./figures/Flocking_coupled.jpg>]
+<figures/cons_combined.jpg, id=72, 429.85594pt x 268.75406pt>
+File: figures/cons_combined.jpg Graphic file (type jpg)
+<use figures/cons_combined.jpg>
+Package luatex.def Info: figures/cons_combined.jpg  used on input line 176.
+(luatex.def)             Requested size: 193.71542pt x 121.11516pt.
+ [9
+
+<./figures/cons_combined.jpg>]
+<figures/general_arch_literture.jpg, id=78, 382.80516pt x 249.55734pt>
+File: figures/general_arch_literture.jpg Graphic file (type jpg)
+<use figures/general_arch_literture.jpg>
+Package luatex.def Info: figures/general_arch_literture.jpg  used on input line 
+190.
+(luatex.def)             Requested size: 185.78293pt x 121.11516pt.
+ [10
+
+<./figures/general_arch_literture.jpg>] [11
 
 ]
 \tf@nav=\write6
@@ -1058,35 +1126,38 @@ Package luatex.def Info: slides_handwritten/slide1.jpg  used on input line 62.
 \tf@snm=\write8
 
 \openout8 = grm.snm
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 71.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 71.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 199.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 199.
  (./grm.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 71.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 71.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 199.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 199.
 Package rerunfilecheck Info: File `grm.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 )
 
 Here is how much of LuaTeX's memory you used:
- 22781 strings out of 480878
+ 22940 strings out of 480878
  125171,794899 words of node,token memory allocated
  1052 words of node memory still in use:
    14 hlist, 6 vlist, 2 rule, 1 local_par, 1 dir, 21 glue, 5 kern, 11 penalty, 9
  glyph, 55 attribute, 61 glue_spec, 29 attribute_list, 4 write, 6 pdf_colorstack
  nodes
-   avail lists: 1:2,2:368,3:74,4:90,5:51,6:13,7:289,8:4,9:113,10:3,11:16
- 39401 multiletter control sequences out of 65536+200000
- 54 fonts using 5824467 bytes
- 58i,11n,67p,788b,398s stack positions out of 5000i,500n,10000p,200000b,50000s
+   avail lists: 1:2,2:535,3:127,4:118,5:109,6:28,7:1960,8:9,9:171,10:15,11:170
+ 39500 multiletter control sequences out of 65536+200000
+ 79 fonts using 7863475 bytes
+ 58i,11n,67p,788b,494s stack positions out of 5000i,500n,10000p,200000b,50000s
 <//?/c:/program files/miktex/fonts/opentype/public/lm/lmsans17-regular.otf><//?/
-c:/program files/miktex/fonts/opentype/public/lm/lmsans8-oblique.otf><//?/c:/pro
-gram files/miktex/fonts/opentype/public/lm/lmsans8-regular.otf><//?/c:/program f
-iles/miktex/fonts/opentype/public/lm/lmsans10-regular.otf><//?/c:/program files/
-miktex/fonts/opentype/public/lm/lmsans12-regular.otf><C:/Program Files/MiKTeX/fo
-nts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on grm.pdf (5 pages, 190370 bytes).
+c:/program files/miktex/fonts/opentype/public/lm/lmsans10-oblique.otf><//?/c:/pr
+ogram files/miktex/fonts/opentype/public/lm/lmsans8-oblique.otf><//?/c:/program 
+files/miktex/fonts/opentype/public/lm/lmsans8-regular.otf><//?/c:/program files/
+miktex/fonts/opentype/public/lm/lmsans10-regular.otf><//?/c:/program files/mikte
+x/fonts/opentype/public/lm/lmsans12-regular.otf><C:/Program Files/MiKTeX/fonts/t
+ype1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/a
+msfonts/cm/cmsy6.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cms
+y8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb>
+Output written on grm.pdf (11 pages, 1670120 bytes).
 
-PDF statistics: 85 PDF objects out of 1000 (max. 8388607)
- 13 named destinations out of 1000 (max. 131072)
+PDF statistics: 143 PDF objects out of 1000 (max. 8388607)
+ 25 named destinations out of 1000 (max. 131072)
  16 words of extra memory for PDF output out of 10000 (max. 100000000)
 
