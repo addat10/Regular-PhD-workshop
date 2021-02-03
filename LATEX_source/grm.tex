@@ -20,7 +20,7 @@
 \title[Spectral Graph Theory Applications]{Group Research Meeting}
 \author{Adwait Datar}
 \institute{Technical University of Hamburg}
-\date{$6^{th}$ Jan,2020}
+\date{$3^{rd}$ Feb,2020}
 
 \begin{document}
 
@@ -54,25 +54,25 @@
 	\item Numerically estimate(informally) the conservatism
 \end{itemize}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{rho-IQCs\footnote{[2017] Boczar, Lessard, Packard, Recht}}
-\begin{minipage}{0.45\textwidth}
-	\begin{figure}
-		\includegraphics[width=1.0\linewidth]{figures/rho_IQCs.JPG}
-		\label{fig:mjlstraj}
-	\end{figure}
-\end{minipage}
-\begin{minipage}{0.45\textwidth}
-	\begin{figure}
-		\includegraphics[width=1.0\linewidth]{figures/Conservatism_exponent.JPG}
-		\label{fig:mjlstraj}
-	\end{figure}
-\end{minipage}
-\begin{itemize}
-	\item L2/l2 gains give conservative bounds on the exponents 
-	\item Less conservative LMI formulations via rho-IQCs
-\end{itemize}
-\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{frame}{rho-IQCs\footnote{[2017] Boczar, Lessard, Packard, Recht}}
+%\begin{minipage}{0.45\textwidth}
+%	\begin{figure}
+%		\includegraphics[width=1.0\linewidth]{figures/rho_IQCs.JPG}
+%		\label{fig:mjlstraj}
+%	\end{figure}
+%\end{minipage}
+%\begin{minipage}{0.45\textwidth}
+%	\begin{figure}
+%		\includegraphics[width=1.0\linewidth]{figures/Conservatism_exponent.JPG}
+%		\label{fig:mjlstraj}
+%	\end{figure}
+%\end{minipage}
+%\begin{itemize}
+%	\item L2/l2 gains give conservative bounds on the exponents 
+%	\item Less conservative LMI formulations via rho-IQCs
+%\end{itemize}
+%\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -97,22 +97,37 @@
 		\end{itemize}
 	\end{itemize}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Starting Example}
-	\begin{figure}
-		\includegraphics[width=1.0\linewidth]{figures/Starting_example.JPG}
-		\label{fig:mjlstraj}
-	\end{figure}
+\begin{frame}{Updates}
 	\begin{itemize}
-		\item First order consensus at the network level
-		\item Possible options local agent dynamics:
-			\begin{itemize}
-				\item LTI model with uncertain parameter
-				\item Damping coeff $b=|x|$ non-linearity (=sector non-linearity?)
-				\item Force saturation non-linearity (=sector non-linearity?)
-			\end{itemize} 						
+		\item Vidyasagar: Review singular perturbation for Linear systems
+		\item Khalil: 
+		\begin{itemize}
+			\item Understand stability analysis
+			\item Exponential stability relaxes the conditions on Lyapunov functions 
+		\end{itemize}
+		\item Ongoing work:
+		\begin{itemize}
+			\item Arrive at LMIs to search for Lyapunov functions
+			\item Check the conservatism for simple examples
+		\end{itemize} 
 	\end{itemize}
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{frame}{Starting Example}
+%	\begin{figure}
+%		\includegraphics[width=1.0\linewidth]{figures/Starting_example.JPG}
+%		\label{fig:mjlstraj}
+%	\end{figure}
+%	\begin{itemize}
+%		\item First order consensus at the network level
+%		\item Possible options local agent dynamics:
+%			\begin{itemize}
+%				\item LTI model with uncertain parameter
+%				\item Damping coeff $b=|x|$ non-linearity (=sector non-linearity?)
+%				\item Force saturation non-linearity (=sector non-linearity?)
+%			\end{itemize} 						
+%	\end{itemize}
+%\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Problem 2: Stochastic version of the IQC result}
 \begin{minipage}{0.45\textwidth}
@@ -124,10 +139,15 @@
 		\label{fig:mjlstraj}
 	\end{figure}
 \end{minipage}	
-	\begin{itemize}
-		\item $\Delta$ is characterized by (7.3.3)
-		\item Can we relax condition (7.3.3) and give a weaker implication of (7.3.4) 
-	\end{itemize}
+\begin{itemize}
+	\item $\Delta$ is characterized by (7.3.3). Can we relax this to a stochastic version? 
+\end{itemize}
+\textbf{Updates:}
+\begin{itemize}
+	\item Understand the proofs and subtleties involved in hard and soft IQCs
+\end{itemize}
+
+	
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{}
