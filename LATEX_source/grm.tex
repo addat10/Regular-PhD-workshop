@@ -12,15 +12,22 @@
   \usefonttheme{default}  % or try serif, structurebold, ...
   \setbeamertemplate{navigation symbols}{}
   \setbeamertemplate{caption}[numbered]
+  \setbeamertemplate{footline}[frame number]
 } 
 
 \usepackage[english]{babel}
 \usepackage[utf8x]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows}
+\usepackage{pgfplots} % For Tikz
+% Package for adding comments add disable in [] to remove all comments
+%\usepackage[]{todonotes}
 
-\title[Control techniques for small underwater vehicles]{Control techniques for small underwater vehicles}
+
+\title[Performance Analysis of Source-Seeking Algorithms with Integral Quadratic Constraints]{Performance Analysis of Source-Seeking Algorithms with Integral Quadratic Constraints}
 \author{Adwait Datar}
 \institute{PhD Workshop, 2021\\Technical University of Hamburg}
-\date{$26^{th}$ Feb, 2021}
+\date{$11^{th}$ Sept, 2021}
 
 \begin{document}
 
@@ -33,159 +40,481 @@
 %  \tableofcontents
 %\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Motivating Scenarios}
-	Fukushima Disaster (2011)
-	%\footnote{https://rememberfukushima.org/fallout-maps/}
-	\hspace{0.4 cm}
-	Truck Platoon Competition (2016)
-	%\footnote{https://response.restoration.noaa.gov}
-	\\
-	\begin{minipage}{0.45\textwidth}	
-		\begin{figure}
-			\includegraphics[width=1\textwidth]{figures/fukushima_disaster.jpg}
-			%\caption{Fukushima Disaster (2011)}
-			%\label{fig:fukushima_disaster}
+\begin{frame}{Source-seeking Algorithms}
+	\begin{figure}[!htb]
+		\centering
+		\begin{minipage}{.5\textwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth,height=0.45\textheight]{figures/single_quad_field.jpg}
+			\caption{Single quadrotor}
+			\label{fig:single_quad}
+		\end{minipage}%
+		\begin{minipage}{0.5\textwidth}
+			\centering
+			\includegraphics[width=\linewidth,height=0.45\textheight]{figures/multiple_quad_field.jpg}
+			\caption{Multiple quadrotors}
+			\label{fig:multiple_quads}
+		\end{minipage}
 		\end{figure}
-		\begin{figure}
-			\includegraphics[scale=0.2]{figures/Essaim_constellation.jpg}\label{fig:satellite_flock}
-		\end{figure}
-	\end{minipage}
-	\hspace{0.05cm}
-	\begin{minipage}{0.45\textwidth}
-		\begin{figure}
-			\includegraphics[height=0.4\textheight]{figures/truck_platoon.jpg}
-			%\caption{Oil Spills}
-			%\label{fig:oilspills}
-		\end{figure}
-		\begin{figure}
-			\includegraphics[scale=0.1]{figures/Dyson_swarm.png}		
-			\label{fig:Dyson_swarms}
-		\end{figure}	
-	\end{minipage}
-	
-	.
-	\hspace{0.5 cm}
-	EADS Astrium 
-	%\footnote{https://earth.esa.int}
-	\hspace{1.7 cm}
-	Dyson Swarm (Why not !)
-	\\
-	%\vspace{0.5cm}
-	%\begin{itemize}
-	%	\item Disaster striken areas could be dangerous and potentially life threatening for humans 
-	%	\item Deploy a swarm of autonomous robots with sensing and communication capabilities to locate the source of accident.
-	%\end{itemize}
+	\begin{block}{Assumptions}
+		\begin{itemize}		
+			\item Field is differentiable (can be relaxed using sub-gradients) and convex
+			\item Local gradients available at each agent (Replaced by gradient estimates in practise)
+		\end{itemize}		
+	\end{block}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Abstracting to a Mathematical Problem}	
-\begin{block}{Problem Statement:}
-Design distributed control algorithms for large networks of mobile robots such that the group shows a desirable behavior.
-\end{block}
-\begin{itemize}
-	\item Desirable behaviors we consider:
+\begin{frame}{Motivations and relevant works}
+	\begin{block}{Earlier work on analysis of source-seeking algorithms}
 	\begin{itemize}
-		\item Consensus and/or Formation stabilization
-		\item Flocking with/without source seeking
-	\end{itemize}	
-	\item Complexity in solving the problem can stem through:
-	\begin{itemize}
-		\item Complicated dynamics of individual agents
-		\item Commplicated Interconnection structure and intractible design algorithms for large networks
+		\item Stability analysis but no performance guarantees [Attallah, 2020], [Datar, Paulsen and Werner, 2020]
+		\item Lyapunov (storage) functions are constructed based on physically motivated energy like functions: Diagonal Lyapunov (storage) functions [Datar, Paulsen and Werner, 2020]
+		\item Use small-gain arguments for general non-linear (LPV) agents [Attallah, Datar and Werner, 2020]
 	\end{itemize}
-\end{itemize}
+	\end{block}	
+	\begin{block}{Key contributions of this work}
+	\begin{itemize}
+		\item Performance analysis with guaranteed rates of convergence
+		\item Quantifiable robustness w.r.t underlying field
+		\item Less conservative results with dynamic non-causal multipliers
+	\end{itemize}
+\end{block}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Approaching the problem: Divide and Conquer}
-\begin{block}{Available literature on}
-\begin{itemize}
-	\item Control of single complex agent dynamics (e.g LPV, control of differetially flat systems, dynamic inversion) 
-	\item Distributed control of large networks of "simple" agent dynamics (e.g single and double intergrators) -> Consensus and Flocking algorithms
-\end{itemize}
+\begin{frame}{Control Architecture: Single Agent}
+	\begin{figure}[!htb]
+		\centering
+		\begin{minipage}{.6\textwidth}
+			\centering
+			\includegraphics[width=6cm]{figures/Figure_IQC_paper.PNG}
+			%\input{figures/quadrotor_trajectory}
+			%\caption{Block diagram}
+			\centering
+			\label{fig:Figure_IQC_paper}
+		\end{minipage}%
+		\begin{minipage}{0.4\textwidth}
+			\centering
+			\includegraphics[width=1.1\linewidth,height=0.4\textheight]{figures/loop.png}
+		%	\caption{Multiple quadrotors}
+			%\label{fig:multiple_quads}
+		\end{minipage}
+	\end{figure}
+%	\begin{figure}[t]
+%		\includegraphics[width=8cm]{figures/Figure_IQC_paper.PNG}
+%		%\input{figures/quadrotor_trajectory}
+%		%\caption{Block diagram}
+%		\centering
+%		\label{fig:Figure_IQC_paper}
+%	\end{figure}
+	\begin{equation} \label{eq:sys_dyn_G}
+		\begin{split}
+			\Dot{\eta}(t)&=A_G\eta(t) + B_G u(t), \quad \quad \eta(0)=\eta_0\\
+			y(t)&=C_G \eta(t) \\
+			u(t)&=\nabla f(y(t)),
+		\end{split}
+	\end{equation}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Decomposing flocking dynamics under quadratic fields}
+	\begin{figure}[t]
+		\includegraphics[width=6cm]{figures/loop_multiple_agents.PNG}
+		%\input{figures/quadrotor_trajectory}
+		\caption{Block diagram}
+		\centering
+		%\label{fig:Figure_IQC_paper}
+	\end{figure}
+	\begin{equation} \label{eq:flocking_dynamics}
+		\begin{split}
+			\Dot{\hat{\eta}}(t)&=(I_N \otimes A_G)\hat{\eta}(t) + (I_N \otimes B_G)\hat{u}(t),\\
+			\hat{y}(t)&=(I_N \otimes C_G)\hat{\eta}(t) \\
+			\hat{u}(t)&=\nabla \hat{f}(\hat{y}(t))-\nabla \mathcal{V}(\hat{y}(t))-(\mathcal{L}\otimes I_d)\Dot{\hat{y}}(t).
+		\end{split}
+	\end{equation}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Decomposing flocking dynamics under quadratic fields}
+	\begin{block}{Averaging out state, input and output:Center Of Mass(COM)} $\eta_c=\textnormal{avg}(\hat{\eta})$, $y_c=\textnormal{avg}(\hat{y})$, $u_c=\textnormal{avg}(\hat{u})$
+	\end{block}
+	\begin{block}{Quadratic fields (Linear gradients)}
+	\begin{itemize}
+	\item $f(y)=y^T Q y + c^Ty + d \implies \nabla f (y)=2 Qy + c$
+	\item $\textnormal{avg}(\nabla \hat{f}(\hat{y}))=\nabla f (\textnormal{avg}(\hat{y}))=\nabla f(y_c)$
+	\end{itemize}
+	\end{block}
+	\begin{block}{Averaging dynamics \eqref{eq:flocking_dynamics}}
+	\begin{itemize}
+		\item $\textnormal{avg}((I_N \otimes A_G)\hat{\eta})=A_G{\eta_c}$ (Similary for $B_G$ and $C_G$)
+		\item $\textnormal{avg}(\nabla \mathcal{V}(\hat{y}))=\mathbf{0}$,$\textnormal{avg}((\mathcal{L}\otimes I_d))=\mathbf{0}$ 
+	\end{itemize}
+	\end{block}
+	\begin{equation}\label{eq:COM_dynamics}
+		\begin{split}
+			\Dot{\eta_c}(t)
+			% &=\frac{1}{N}(\mathbf{1}_N^T \otimes I_{n_\eta})((I_N \otimes A_G)\hat{\eta}(t) + (I_N \otimes B_G)\hat{u}(t)),\\
+			% &=\frac{1}{N}(\mathbf{1}_N^T \otimes A_G)\hat{\eta}(t)+ \frac{1}{N}(\mathbf{1}_N^T \otimes B_G )\hat{u}(t)),\\
+			&=A_G \eta_c + B_G u_c,\\
+			\hat{y}_c(t)
+			% &=\frac{1}{N}(\mathbf{1}_N^T \otimes I_{d})(I_N \otimes C_G)\hat{\eta}(t) \\
+			&= C_G \eta_c\\
+			\hat{u}_c(t)&=\nabla f (y_c).
+		\end{split}
+	\end{equation}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Theory}
+	\begin{block}{Relevant Literature}
+		\begin{itemize}
+			\item Exponential IQCs introduced in [Lessard,Recht and Packard, 2016], [Hu and Seiler, 2016], 
+			\item Non-causal dynamic Zames Falb $\alpha$-IQCs [Freeman, 2018] 
+			\item Parameterization of dynamics Zames Falb IQCs [Veenman and Scherer, 2018] 
+		\end{itemize}
+	\end{block}	
+	\begin{block}{theoretical contribution of this work}
+	\begin{itemize}
+		\item Derivation of a general non-causal dynamic $\alpha$-ZF IQCs
+		non-causal dynamic multipliers with an LMI-able parameterization
+	\end{itemize}
 \end{block}	
-\begin{block}{Consider as building blocks}
-\begin{itemize}
-	\item Closed-loop system $G_{\textnormal{cl}}$ with some guaranteed performance measure such as the induced $\mathcal{L}_2-\mathcal{L}_2$ or  $\mathcal{L}_2-\mathcal{L}_{\infty}$ norms
-	\item Consensus or Flocking algorithms for "simple" systems
-\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Loop in the deviation variables}
+	\begin{block}{Equilibrium}
+		\begin{equation} \label{eq:sys_dyn_G_delta}
+			\begin{split}
+				0&=A_G\eta_* + B_G u_*=A_G\eta_*\\
+				y&=C_G \eta_*\\
+				u_*&=\nabla f(y_*)=0
+			\end{split}
+		\end{equation}
+	\end{block}
+	\begin{block}{Loop in the transformed variables}
+		\begin{equation} \label{eq:sys_dyn_G_tilde}
+			\begin{split}
+				\Dot{\Tilde{\eta}}(t)&=A_G\Tilde{\eta}(t) + B_G \Tilde{u}(t), \quad \quad \Tilde{\eta}(0)=\eta_0-\eta_*\\
+				\Tilde{y}(t)&=C_G \Tilde{\eta}(t)
+			\end{split}
+		\end{equation}
+		and 
+		\begin{equation} \label{eq:delta}
+			\Tilde{u}(t)=\nabla f(\Tilde{y}(t)+y_*)
+		\end{equation}
+	\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Loop in the deviation variables}
+	\begin{figure}[!htb]
+		\centering
+		\begin{minipage}{.5\textwidth}
+			\centering
+			\includegraphics[width=0.8\linewidth,height=0.45\textheight]{figures/loop.PNG}
+			\caption{Original loop}
+			\label{fig:prob1_6_2}
+		\end{minipage}%
+		\begin{minipage}{0.5\textwidth}
+			\centering
+			\includegraphics[width=0.8\linewidth,height=0.45\textheight]{figures/loop_dev_vars.PNG}
+			\caption{Loop in deviation variables}
+			\label{fig:prob1_6_1}
+		\end{minipage}
+	\end{figure}
+\begin{block}{Assumption 1}
+	Let $f$ be a differentiable convex field with the minimum at $y_*$ satisfying
+	\begin{equation*}
+		m||y_1-y_2||^2 \leq  (\nabla f(y_1)-\nabla f(y_2))^T(y_1-y_2) \leq L ||y_1-y_2||^2 \quad \forall y_1,y_2.
+	\end{equation*}
+	
 \end{block}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Consensus/ Formation with a decoupled architecture: \\"Small" disturbances and "good" tracking}
-\begin{figure}
-	\includegraphics[height=0.45\textheight]{figures/cons_decoupled.jpg}
-	%\caption{Oil Spills}
-	%\label{fig:oilspills}
-\end{figure}
-\begin{itemize}
-	\item Can bound the $||q-y||_{\mathcal{L}_{\infty}}$ to get an idea about how far the true trajectories given a bound on the disturbance
-	\item C. Hespe, A. Datar, and H. Werner, “Distributed control of mobile lti and lpv agents using induced $\mathcal{L}_2$ to $\mathcal{L}_{\infty}$ norms.”
-	\item Discrete-time, positive systems theory-> ACC Submission
-\end{itemize}
+\begin{frame}{Zames Falb IQCs}	
+	\begin{figure}[t]
+		\includegraphics[width=9cm]{figures/signal_definitions_p_q_w.PNG}
+		%\input{figures/quadrotor_trajectory}
+		%\caption{Block diagram}
+		\centering
+		%\label{fig:Figure_IQC_paper}
+	\end{figure}
+\textbf{Theorem:} Let $h \in \mathcal{L}_1(-\infty,\infty)$ satisfy
+		\begin{equation} \label{eq:zf_impulse_resp_cond}
+			\begin{aligned}
+				h(s) &\geq 0, \quad \forall s \in \mathbb{R} \textnormal{ and } \int_{-\infty}^{\infty}h(s)ds &\leq H.
+			\end{aligned}
+		\end{equation}	
+	Then, under the assumptions on $f$, $\forall T \geq 0$ and $\forall \tilde{y} \in \mathcal{L}_{2e}$,	
+		\begin{equation}
+			\int_0^T e^{2\alpha t}( H p(t)^T q(t) - p(t)^T w_1(t) - q(t)^T w_2(t)) dt \geq 0.
+		\end{equation}
+
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Flocking with a decoupled architecture:\\ "slow" flocking and "good" tracking}
-	\begin{figure}
-		\includegraphics[height=0.45\textheight]{figures/Flocking_decoupled.jpg}
-		%\caption{Oil Spills}
-		%\label{fig:oilspills}
+\begin{frame}{Parameterize $h(t)$}	
+	
+\begin{itemize}
+\item Fix $A_{\nu}=
+\begin{bmatrix} 
+	\rho   & 0      &\dots     & 0 \\
+	1      & \rho   & \ddots        &0  \\
+	0      & \ddots      & \ddots     &0  \\
+	\vdots & 0      & 1        &\rho  
+\end{bmatrix},
+B_{\nu}=
+\begin{bmatrix} 
+	1 \\
+	0\\
+	\vdots\\
+	0 
+\end{bmatrix}.$
+\item Parameterize $h(t)$ as  
+\begin{equation}\label{eq:h_defn}
+	\begin{split}
+		h(t)&=
+		\begin{cases}
+			P_1 e^{-A_{\nu}t}B_{\nu}, & \text{if}\ t<0 \\
+			P_3 e^{A_{\nu}t}B_{\nu}, & \text{if}\ t\geq 0
+		\end{cases}
+	\end{split}
+\end{equation}
+\item If $\textnormal{LMI}(H,P_1,P_3)<0$, conditions on $h(t)$ hold [Scherer, 2013].
+\item For searching over only causal(anti-causal) multipleirs, set $P_1=0$ ($P_3=0$)
+\item For searching over static multipliers(Circle criterion), set $P_1=0$ and $P_3=0$
+\end{itemize}
+	
+%	\begin{equation}
+%		A_{\nu}=
+%		\begin{bmatrix} 
+%			\rho   & 0      &\dots     & 0 \\
+%			1      & \rho   & \ddots        &0  \\
+%			0      & \ddots      & \ddots     &0  \\
+%			\vdots & 0      & 1        &\rho  
+%		\end{bmatrix},
+%		B_{\nu}=
+%		\begin{bmatrix} 
+%			1 \\
+%			0\\
+%			\vdots\\
+%			0 
+%		\end{bmatrix}.
+%	\end{equation}
+	
+	
+	
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Parameterize $h(t)$}
+\begin{figure}[t]
+	\includegraphics[width=9cm]{figures/signal_definitions.PNG}
+	%\input{figures/quadrotor_trajectory}
+	%\caption{Block diagram}
+	\centering
+	%\label{fig:Figure_IQC_paper}
+\end{figure}
+\begin{equation*}
+	( H p^T q - p^T w_1 - q^T w_2)=		
+	\tilde{z}^T
+	\begin{bmatrix}
+		\mathbf{0}  & \begin{bmatrix}
+			H  & -P_3 \\
+			-P_1^T    & \mathbf{0}
+		\end{bmatrix} \\
+		*    & \mathbf{0}
+	\end{bmatrix}\tilde{z}
+\end{equation*}	
+Define $\mathbb{P}$ such that every $P \in \mathbb{P}$ generates a valid $h(t)$.	
+\begin{equation*}
+	\mathbb{P}=\left\{
+	\begin{bmatrix}
+		\mathbf{0}  & \begin{bmatrix}
+			H  & -P_3 \\
+			-P_1^T    & \mathbf{0}
+		\end{bmatrix} \\
+		*    & \mathbf{0}
+	\end{bmatrix}: \textnormal{LMI}(H,P_1,P_3)<0
+	\right\}
+\end{equation*}
+
+
+%Let the state space realization of $\Psi$ be 
+%\begin{equation}\label{eq:ss_Psi}
+%	\left[
+%	\begin{array}{c|c}
+%		A_{\Psi} & B_{\Psi} \\
+%		\hline
+%		C_{\Psi} & D_{\Psi}
+%	\end{array}
+%	\right]
+%	=
+%	\left[
+%	\begin{array}{cc|cc}
+%		A_{\nu}^{\alpha} \otimes I_d        &\mathbf{0}                         &-B_{\nu}\otimes mI_d       &B_{\nu}\otimes I_d \\
+%		\mathbf{0}                          &A_{\nu}^{\alpha} \otimes I_d       &B_{\nu}\otimes LI_d        &-B_{\nu}\otimes I_d \\
+%		\hline
+%		\mathbf{0}                          &\mathbf{0}                         &-mI_d                      &I_d \\
+%		I_{\nu}\otimes I_d                  &\mathbf{0}                         &\mathbf{0}                 &\mathbf{0}\\
+%		\mathbf{0}                          &\mathbf{0}                         &LI_d                       &-I_d\\
+%		\mathbf{0}                          &I_{\nu}\otimes I_d                 &\mathbf{0}                 &\mathbf{0}
+%	\end{array}
+%	\right].
+%\end{equation}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Main Results}
+\textbf{Theorem:} Under the assumptions on $f$, $\forall T \geq 0$ and $\forall \tilde{y} \in \mathcal{L}_{2e}$,	
+	\begin{equation*}
+		\int_0^T e^{2\alpha t}\Tilde{z}^T(t) (P \otimes I_d) \Tilde{z}(t) dt \geq 0 \quad \forall P \in \mathbb{P},\forall T \geq 0.
+	\end{equation*}
+\begin{figure}[t]
+	\includegraphics[width=5cm]{figures/Psi_GI.PNG}
+	%\input{figures/quadrotor_trajectory}
+	% \caption{Block diagram}
+	\centering
+	%\label{fig:Figure_IQC_paper}
+\end{figure}
+\textbf{Theorem:} Under the assumptions on $f$, if $\exists \mathcal{X}>0,P \in \mathbb{P}$ such that
+\begin{equation*}\label{eq:perf_LMI}
+	\begin{bmatrix}
+		\mathcal{A}^T\mathcal{X}+\mathcal{X}\mathcal{A}+2\alpha \mathcal{X}  & \mathcal{X}\mathcal{B} \\
+		\mathcal{B}^T\mathcal{X}    & \mathbf{0}
+	\end{bmatrix}
+	+
+	\begin{bmatrix}
+		\mathcal{C}^T \\
+		\mathcal{D}^T 
+	\end{bmatrix}
+	( P\otimes I_d)
+	\begin{bmatrix}
+		\mathcal{C} & \mathcal{D} 
+	\end{bmatrix}
+	\leq 
+	0,
+\end{equation*}
+then, $||\Tilde{y}(t)||\leq \kappa e^{-\alpha t}$ holds for all $t\geq 0$, 
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{frame}{Theory}
+%	\begin{figure}[t]
+%	\includegraphics[width=5cm]{figures/Psi_GI.PNG}
+%	%\input{figures/quadrotor_trajectory}
+%	% \caption{Block diagram}
+%	\centering
+%	%\label{fig:Figure_IQC_paper}
+%	\end{figure}
+%\begin{theorem}\label{theom:theorem_perf_analysis}
+%	If $\exists \mathcal{X}>0,P \in \mathbb{P}$ such that
+%	\begin{equation}\label{eq:perf_LMI}
+%		\begin{bmatrix}
+%			\mathcal{A}^T\mathcal{X}+\mathcal{X}\mathcal{A}+2\alpha \mathcal{X}  & \mathcal{X}\mathcal{B} \\
+%			\mathcal{B}^T\mathcal{X}    & \mathbf{0}
+%		\end{bmatrix}
+%		+
+%		\begin{bmatrix}
+%			\mathcal{C}^T \\
+%			\mathcal{D}^T 
+%		\end{bmatrix}
+%		( P\otimes I_d)
+%		\begin{bmatrix}
+%			\mathcal{C} & \mathcal{D} 
+%		\end{bmatrix}
+%		\leq 
+%		0,
+%	\end{equation}
+%	then, $y$ converges exponentially to $y_*$ with rate $\alpha$, i.e., $\exists \kappa \geq 0$ such that  
+%	$||\Tilde{y}(t)||\leq \kappa e^{-\alpha t}$ holds for all $t\geq 0$.
+%\end{theorem}
+%\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Numerical results: Quadrotor}
+	\begin{figure}[!htb]
+			\includegraphics[width=6cm]{figures/Figure_IQC_paper.PNG}		
+			\centering	
 	\end{figure}
-	\begin{itemize}		
-		\item Experimental work: Datar, Adwait, Paulsen, Peter and Werner, Herbert (2020): Flocking Towards the Source: Indoor Experiments with Quadrotors. In 2020 European Control Conference (ECC) (pp. 1638-1643).
-		\item Local Velocity Controller
-		\item \textcolor{red}{No Analysis yet}
+	\begin{block}{Setup}
+		\begin{itemize}
+			\item Linearized quadrotor model + LQR local controller
+			\item Questions:
+				  \begin{itemize}
+				  	\item How robust is the given controller for different fields?
+				  	\item How do we select the PD gains for the pre-filter?
+				  	\item How conservative are the estimates on the rates of convergence?
+			  	  \end{itemize}
+		\end{itemize}
+	\end{block}	
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Numerical results: Robustness with respect to field}	
+	\begin{figure}[t]
+		%\includegraphics[width=8cm]{figures/Figure_IQC_paper.PNG}
+		\input{figures/robustness_quadrotor}
+		\caption{Robustness for Quadrotor and $m=1$}
+		\centering
+		\label{fig:quadrotor_robustness}
+	\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Numerical results: Performance curves for kp,kd}
+	\begin{figure}[t]
+		%\includegraphics[width=8cm]{figures/Figure_IQC_paper.PNG}
+		\input{figures/optimal_kd_kp_ratio}
+		\caption{Robustness for Quadrotor and $m=1$}
+		\centering
+		\label{fig:optimal_kd_kp_ratio}
+	\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Numerical results: Quadrotor Trajectory}	
+	\begin{figure}[t]
+		\includegraphics[width=8cm]{figures/quadrotor_trajectory.JPG}
+		%\input{figures/quadrotor_trajectory}
+		\caption{Robustness for Quadrotor and $m=1$}
+		\centering
+		\label{fig:quadrotor_trajectory}
+	\end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{A toy example motivating non-causal multipliers}
+	
+	\begin{figure}[t]
+		%\includegraphics[width=8cm]{figures/Figure_IQC_paper.PNG}
+		\input{figures/benefit_of_non_causal_multipliers}
+		\caption{Robustness for $G(s)=5\frac{(s-1)}{s(s^2+s+25)}$ and $m=1$}
+		\centering
+		\label{fig:benefit_of_non_causal_multipliers}
+	\end{figure}	
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Ongoing work and next steps }
+	\begin{block}{Forseeable extensions}
+	\begin{itemize}
+		\item Source-seeking with formation control with a leader (Grounded Laplacians) (\textbf{Tested and seems to work} )
+		\item LPV vehicle models
+		\item Extend the full block ZF multipliers to the $\alpha$- IQC case
+		\item Controller synthesis with DK-iteration?
+		\item Mean squared stability analysis with MJLS
+	\end{itemize}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{References}
+	\begin{itemize}
+		\item[1] C.  Scherer,  “Dissipativity  and  integral  quadratic  constraints,  tailoredcomputational robustness tests for complex interconnections.” [Online].Available: https://arxiv.org/pdf/2105.07401
+		\item[2]  M.  Fazlyab,  A.  Ribeiro,  M. Morari,  and  V.  M.  Preciado,  “Analysis  ofoptimization algorithms via integral quadratic constraints: Nonstronglyconvex  problems,”SIAM  Journal  on  Optimization,  vol.  28,  no.  3,  pp.2654–2689, 2018.
+		\item[3]  A.  Datar,  P.  Paulsen,  and  H.  Werner,  “Flocking  towards  the  source:Indoor experiments with quadrotors,” in2020 European Control Con-ference (ECC).    IEEE, 5/12/2020 - 5/15/2020, pp. 1638–1643.
+		\item[4]  A.  Attallah,  A.  Datar,  and  H.  Werner,  “Flocking  of  linear  parametervarying  agents:  Source  seeking  application  with  underwater  vehicles,”IFAC-PapersOnLine, vol. 53, no. 2, pp. 7305–7311, 2020.		
 	\end{itemize}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Consensus with a Coupled architecture}
-\begin{figure}
-	\includegraphics[height=0.45\textheight]{figures/cons_coupled.jpg}
-	%\caption{Oil Spills}
-	%\label{fig:oilspills}
-\end{figure}
-\begin{itemize}
-	\item Can show stability (boundedness without assymptotic stability)
-	\item Input output stability via a small-gain argument (Hespe's M. Thesis)
-	\item Singular perturbation theory with a time-scale separation to prove assymptotic stability
-\end{itemize}
+\begin{frame}{References}
+	\begin{itemize}		
+		\item[5]  L.  Lessard,  B.  Recht,  and  A.  Packard,  “Analysis  and  design  of  opti-mization  algorithms  via  integral  quadratic  constraints,”SIAM  Journalon Optimization, vol. 26, no. 1, pp. 57–95, 2016.
+		\item[6]  B.  Hu  and  P.  Seiler,  “Exponential  decay  rate  conditions  for  uncertainlinear systems using integral quadratic constraints,”IEEE Transactionson Automatic Control, vol. 61, no. 11, pp. 3631–3637, 2016.
+		\item[7]  R. A. Freeman, “Noncausal zames-falb multipliers for tighter estimatesof  exponential  convergence  rates,”  in2018  Annual  American  ControlConference (ACC).    IEEE, 6/27/2018 - 6/29/2018, pp. 2984–2989.
+		\item[8]  J.   Veenman   and   C.   W.   Scherer,   “Stability   analysis   with   integralquadratic  constraints:  A  dissipativity  based  proof,”  in52nd  IEEEConference on Decision and Control, 2013, pp. 3770–3775.
+	\end{itemize}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Flocking with a Coupled architecture}
-	
-\begin{figure}
-	\includegraphics[height=0.45\textheight]{figures/Flocking_coupled.jpg}
-	%\caption{Oil Spills}
-	%\label{fig:oilspills}
-\end{figure}
-\begin{itemize}
-	\item Attallah, Aly and Datar, Adwait and Werner, Herbert (2020): Flocking of Linear Parameter Varying Agents: Source Seeking Application with Underwater Vehicles. In 21st IFAC World Congress
-	\item \textcolor{red}{No assymptotic stability yet}
-\end{itemize}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{A more heuristic and practical architecture}
-	
-\begin{figure}
-	\includegraphics[height=0.45\textheight]{figures/cons_combined.jpg}
-	%\caption{Oil Spills}
-	%\label{fig:oilspills}
-\end{figure}
-\begin{itemize}
-	\item Heuristic: Works well in Simulation
-	\item \textcolor{red}{No analysis yet}
-\end{itemize}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Another commonly observed architecture}
-	
-	\begin{figure}
-		\includegraphics[height=0.45\textheight]{figures/general_arch_literture.jpg}
-		%\caption{Oil Spills}
-		%\label{fig:oilspills}
-	\end{figure}
-	\begin{itemize}
-		\item Lot of literature on Stability Analysis for LTI systems
-		\item Some of our past literature on Stability Analysis for LPV systems
-		\item Some recent work on Passivity based analysis by Mark Spong and others
+\begin{frame}{References}
+	\begin{itemize}		
+		\item[9]  J.    Zhang,    P.    Seiler,    and    J.    Carrasco,    “Noncausal    fir    zames-falb  multiplier  search  for  exponential  convergence  rate.”  [Online].Available: https://arxiv.org/pdf/1902.09473
 	\end{itemize}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -195,5 +524,39 @@ Design distributed control algorithms for large networks of mobile robots such t
 \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{frame}{Abstracting to a Mathematical Problem}	
+%\begin{block}{Problem Statement:}
+%Design distributed control algorithms for large networks of mobile robots such that the group shows a desirable behavior.
+%\end{block}
+%\begin{itemize}
+%	\item Desirable behaviors we consider:
+%	\begin{itemize}
+%		\item Consensus and/or Formation stabilization
+%		\item Flocking with/without source seeking
+%	\end{itemize}	
+%	\item Complexity in solving the problem can stem through:
+%	\begin{itemize}
+%		\item Complicated dynamics of individual agents
+%		\item Commplicated Interconnection structure and intractible design algorithms for large networks
+%	\end{itemize}
+%\end{itemize}
+%\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{frame}{Approaching the problem: Divide and Conquer}
+%\begin{block}{Available literature on}
+%\begin{itemize}
+%	\item Control of single complex agent dynamics (e.g LPV, control of differetially flat systems, dynamic inversion) 
+%	\item Distributed control of large networks of "simple" agent dynamics (e.g single and double intergrators) -> Consensus and Flocking algorithms
+%\end{itemize}
+%\end{block}	
+%\begin{block}{Consider as building blocks}
+%\begin{itemize}
+%	\item Closed-loop system $G_{\textnormal{cl}}$ with some guaranteed performance measure such as the induced $\mathcal{L}_2-\mathcal{L}_2$ or  $\mathcal{L}_2-\mathcal{L}_{\infty}$ norms
+%	\item Consensus or Flocking algorithms for "simple" systems
+%\end{itemize}
+%\end{block}
+%\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
+
