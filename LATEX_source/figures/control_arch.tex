@@ -1,0 +1,53 @@
+\tikzstyle{block} = [draw, rectangle, 
+    minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw,  circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+% The block diagram code is probably more verbose than necessary
+%\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+%    % We start by placing the blocks
+%    \node [input, name=input] {};
+%    \node [sum, right of=input] (sum) {};
+%    \node [block, right of=sum] (controller) {Controller};
+%    \node [block, right of=controller, pin={[pinstyle]above:Disturbances},
+%            node distance=3cm] (system) {System};
+%    % We draw an edge between the controller and system block to 
+%    % calculate the coordinate u. We need it to place the measurement block. 
+%    \draw [->] (controller) -- node[name=u] {$u$} (system);
+%    \node [output, right of=system] (output) {};
+%    \node [block, below of=u] (measurements) {Measurements};
+%
+%    % Once the nodes are placed, connecting them is easy. 
+%    \draw [draw,->] (input) -- node {$r$} (sum);
+%    \draw [->] (sum) -- node {$e$} (controller);
+%    \draw [->] (system) -- node [name=y] {$y$}(output);
+%    \draw [->] (y) |- (measurements);
+%    \draw [->] (measurements) -| node[pos=0.99] {$-$} 
+%        node [near end] {$y_m$} (sum);
+%\end{tikzpicture}
+
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+% We start by placing the blocks
+\node [input, name=input] {};
+\node [block, right of=input,node distance=3cm](Flockcontrol) {$\begin{array}{cc}
+   \Dot{q} =& p \\
+   \Dot{p} =&-k_d p-k_p u
+\end{array}$};
+\node [block, right of=Flockcontrol,node distance=4cm,minimum height=2.5em,minimum width=3em](velocityloop) {$\left[\begin{array}{c|c}
+A     &  B\\
+\hline
+C     &  \mathbf{0}
+\end{array}\right]$};
+\node [output, right of=velocityloop,node distance=1.4cm](output) {};
+\node [block, below of=Flockcontrol,node distance=2cm](delta) {$u=\nabla f(y)$};
+\node[text=red, above of = Flockcontrol,xshift=-2cm,yshift=-0.5cm] (veh) {$G$};
+\draw[red, dashed] (veh.east)-|([xshift=-3.8mm]output.west)|-([yshift=-3mm]Flockcontrol.south)-|([xshift=2mm]input.west)|-(veh.west);
+% Once the nodes are placed, connecting them is easy. 
+\draw [draw,->] (input) -- node {$u$} (Flockcontrol);
+\draw [draw,->] (Flockcontrol) -- node {$\begin{bmatrix}q\\p\end{bmatrix}$} (velocityloop);
+\draw [draw,->] (velocityloop) -- node[name=outmid] {$y$} (output);
+\draw [->] (outmid) |- (delta);
+\draw [-] (delta) -| (input);
+\end{tikzpicture}
