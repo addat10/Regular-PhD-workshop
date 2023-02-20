@@ -26,10 +26,10 @@
 \usepackage{amssymb,amsmath}
 \usefonttheme{professionalfonts}
 
-\title[Performance Analysis of Source-Seeking Algorithms with Integral Quadratic Constraints]{Performance Analysis of Source-Seeking Algorithms with Integral Quadratic Constraints}
+\title[Gradient-based Cooperative Control of quasi-Linear Parameter Varying Vehicles with Noisy Gradients]{Gradient-based Cooperative Control of quasi-Linear Parameter Varying Vehicles with Noisy Gradients}
 \author{Adwait Datar}
-\institute{PhD Workshop, 2021\\Technical University of Hamburg}
-\date{$28^{th}$ Feb, 2022}
+\institute{PhD Workshop, 2023\\Technical University of Hamburg}
+\date{$17^{th}$ Feb, 2023}
 
 \begin{document}
 
@@ -45,796 +45,272 @@
 			\includegraphics[width=0.9\linewidth,height=0.45\textheight]{figures/single_quad_field.jpg}
 			%\caption{Single quadrotor}
 			\label{fig:single_quad}
-			PhD workshop Sept 2021
+			Single agent
 		\end{minipage}%
 		\begin{minipage}{0.5\textwidth}
 			\centering
 			\includegraphics[width=0.9\linewidth,height=0.45\textheight]{figures/multiple_quad_field.jpg}
 			%\caption{Multiple quadrotors}
 			\label{fig:multiple_quads}
-			PhD workshop Feb 2022
+			Multiple agents
 		\end{minipage}
-		\end{figure}
-	\begin{block}{Assumptions (Informal)}
+	\end{figure}
+	\begin{block}{Problem Setting}
 		\begin{itemize}		
 			\item Field is differentiable and convex
-			\item Local gradients available at \textcolor{red}{some} leader agents 
-			\item Connectivity assumptions on interconnection graphs
+			\item \textit{Noisy} gradients available at some leader agents 
+			\item Agent dynamics governed by a quasi-LPV model
 		\end{itemize}		
 	\end{block}
 \end{frame}
-
-% Uncomment these lines for an automatically generated outline.
-\begin{frame}{Outline}
-	\tableofcontents
-\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Review: Single agent case}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{Motivations and relevant works}
-%	\begin{block}{Earlier work on analysis of source-seeking algorithms}
-%	\begin{itemize}
-%		\item Stability analysis but no performance guarantees [Attallah, 2020], [Datar, Paulsen and Werner, 2020]
-%		\item Lyapunov (storage) functions are constructed based on physically motivated energy like functions: Diagonal Lyapunov (storage) functions [Datar, Paulsen and Werner, 2020]
-%		\item Use small-gain arguments for general non-linear (LPV) agents [Attallah, Datar and Werner, 2020]
-%	\end{itemize}
-%	\end{block}	
-%	\begin{block}{Key contributions of this work}
-%	\begin{itemize}
-%		\item Performance analysis with guaranteed rates of convergence
-%		\item Quantifiable robustness w.r.t underlying field
-%		\item Less conservative results with dynamic non-causal multipliers
-%	\end{itemize}
-%\end{block}
+%\begin{frame}{Control Architecture}
+%	\begin{figure}[ht]
+%		\input{figures/formation_control_arch_ss}
+%%		\caption{Control architecture}
+%		%\label{fig:control_architecture}	
+%	\end{figure}
 %\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Control Architecture: Single Agent}
-\begin{figure}[ht]
-	\input{figures/control_arch}
-	%\caption{Control architecture}
-	\label{fig:control_architecture}	
-\end{figure}
-%	\begin{figure}[t]
-%		\includegraphics[width=8cm]{figures/Figure_IQC_paper.PNG}
-%		%\input{figures/quadrotor_trajectory}
-%		%\caption{Block diagram}
-%		\centering
-%		\label{fig:Figure_IQC_paper}
-%	\end{figure}
-	\begin{equation*} \label{eq:sys_dyn_G}
-		\begin{split}
-			\Dot{\eta}(t)&=A_G\eta(t) + B_G u(t), \quad \quad \eta(0)=\eta_0\\
-			y(t)&=C_G \eta(t) \\
-			u(t)&=\nabla f(y(t)),
-		\end{split}
-	\end{equation*}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Loop in the deviation variables: Single agent}
-	\begin{block}{Equilibrium}
-		\begin{equation} \label{eq:sys_dyn_G_delta}
-			\begin{split}
-				0&=A_G\eta_* + B_G u_*=A_G\eta_*\\
-				y&=C_G \eta_*\\
-				u_*&=\nabla f(y_*)=0
-			\end{split}
-		\end{equation}
-	\end{block}
-	\begin{block}{Loop in the transformed variables}
-		\begin{equation} \label{eq:sys_dyn_G_tilde}
-			\begin{split}
-				\Dot{\Tilde{\eta}}(t)&=A_G\Tilde{\eta}(t) + B_G \Tilde{u}(t), \quad \quad \Tilde{\eta}(0)=\eta_0-\eta_*\\
-				\Tilde{y}(t)&=C_G \Tilde{\eta}(t)
-			\end{split}
-		\end{equation}
-		and 
-		\begin{equation} \label{eq:delta}
-			\Tilde{u}(t)=\nabla f(\Tilde{y}(t)+y_*)
-		\end{equation}
-	\end{block}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Main Results: Single Agent}
+\begin{frame}{Robust Analysis Problem with Formation Control}
+	\begin{overprint}
+		\onslide<1>		
+		\begin{figure}[!htb]
+			\centering
+			%		\input{figures/control_arch_rob_control_prob}
+			\input{figures/control_arch_rob_control_prob_convex1}
+		\end{figure}
+		%	\onslide<2>
+		%	\begin{figure}[!htb]
+		%	\centering
+		%	%		\input{figures/control_arch_rob_control_prob}
+		%	\input{figures/control_arch_rob_control_prob_convex}
+		%	\end{figure}
+		%	\begin{assumption}
+		%		\begin{itemize}
+		%			\item $m_{\psi}I\preceq \nabla^2 \psi(y_i) \preceq L_{\psi}I$ (Notation: $\psi \in \mathcal{S}(m_{\psi},L_{\psi})$)
+		%			\item Every agent has path to at least 1 informed agent
+		%		\end{itemize}
+		%	\end{assumption}
+		%	$\implies mI\preceq \nabla^2 f(y) \preceq LI$ for suitable $m,L$ (i.e., $f \in \mathcal{S}(m,L)$)
+		\onslide<2>
+		\begin{figure}[!htb]
+			\centering
+			%		\input{figures/control_arch_rob_control_prob}
+			\input{figures/control_arch_rob_control_prob_convex2}
+		\end{figure}
+%		\begin{block}{Problem 2}
+%			%	\begin{Problem} \label{prob:formation_control}
+%			Let $0 \prec m \cdot I\preceq \nabla^2 f(y) \preceq L\cdot I$ (\textcolor{red}{Notation: $f\in \mathcal{S}(m,L)$}), derive sufficient conditions (LMIs) independent of network size under which the state trajectories 
+%			\begin{itemize}
+%				\item[1)] remain bounded for all $t\geq 0$
+%				\item[2)] $\exists \kappa \geq 0$ such that $||y(t)-y_*(t)||\leq \kappa e^{-\alpha t}$ holds for all $t\geq 0$
+%			\end{itemize}
+%			%	\end{Problem}
+%		\end{block}	
+		\onslide<3>	\begin{figure}[!htb]
+			\centering
+			%		\input{figures/control_arch_rob_control_prob}
+			\input{figures/control_arch_rob_control_prob_convex3}
+		\end{figure}
+	\begin{block}{Assume}
 		\begin{itemize}
-			\item Let $y_*$ minimizes $f\in \mathcal{S}(m,L)$
-			\footnote{$m||y_1-y_2||^2 \leq  (\nabla f(y_1)-\nabla f(y_2))^T(y_1-y_2) \leq L ||y_1-y_2||^2$} 
-			\pause
-			\item $\left[\begin{array}{c|c}
-				\mathcal{A}     &  \mathcal{B}\\
-				\hline
-				\mathcal{C}     &  \mathcal{D}
-			\end{array}\right]=\Pi \begin{bmatrix}
-			G\\
-			I_{d}
-		\end{bmatrix}
-			\pause 
-			=
-			\left[
-			\begin{array}{c|c}
-			A_{\pi} \otimes I_{d} & B_{\pi} \otimes I_{d} \\
-			\hline
-			C_{\pi} \otimes I_{d} & D_{\pi} \otimes I_{d}
-		\end{array}
-	\right]\left[
-	\begin{array}{c|c}
-		A_{G} & B_{G} \\
-		\hline
-		C_{G} 		& \mathbf{0} \\
-		\mathbf{0} 	& I_d
-	\end{array}
-	\right]$
-			\pause 
-			\item $\mathbb{P}=\left\{
-			\begin{bmatrix}
-				\mathbf{0}  & \begin{bmatrix}
-					H  & -P_3 \\
-					-P_1^T    & \mathbf{0}
-				\end{bmatrix} \\
-				*    & \mathbf{0}
-			\end{bmatrix}: \textnormal{LMI}(H,P_1,P_3)<0
-			\right\}$
-		\end{itemize}
-	\pause 
-	\begin{block}{Theorem 1}
-		If $\exists \mathcal{X}>0,P \in \mathbb{P}$ such that
-		\begin{equation*}%\label{eq:perf_LMI}
-			\begin{bmatrix}
-				\mathcal{A}^T\mathcal{X}+\mathcal{X}\mathcal{A}+2\alpha \mathcal{X}  & \mathcal{X}\mathcal{B} \\
-				\mathcal{B}^T\mathcal{X}    & \mathbf{0}
-			\end{bmatrix}
-			+
-			\begin{bmatrix}
-				\mathcal{C}^T \\
-				\mathcal{D}^T 
-			\end{bmatrix}
-			( P\otimes I_d)
-			\begin{bmatrix}
-				\mathcal{C} & \mathcal{D} 
-			\end{bmatrix}
-			\leq 
-			0,
-		\end{equation*}
-		then, $||y(t)-y_*(t)||\leq \kappa e^{-\alpha t}$ holds for all $t\geq 0$
-	\end{block}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{Theory}
-%	\begin{block}{Relevant Literature}
-%		\begin{itemize}
-%			\item Exponential IQCs introduced in [Lessard,Recht and Packard, 2016], [Hu and Seiler, 2016], 
-%			\item Non-causal dynamic Zames Falb $\alpha$-IQCs [Freeman, 2018] 
-%			\item Parameterization of dynamics Zames Falb IQCs [Veenman and Scherer, 2018] 
-%		\end{itemize}
-%	\end{block}	
-%	\begin{block}{theoretical contribution of this work}
-%	\begin{itemize}
-%		\item Derivation of a general non-causal dynamic $\alpha$-ZF IQCs
-%		non-causal dynamic multipliers with an LMI-able parameterization
-%	\end{itemize}
-%\end{block}	
-%\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{Loop in the deviation variables}
-%	\begin{figure}[!htb]
-%		\centering
-%		\begin{minipage}{.5\textwidth}
-%			\centering
-%			\includegraphics[width=0.8\linewidth,height=0.45\textheight]{figures/loop.PNG}
-%			\caption{Original loop}
-%			\label{fig:prob1_6_2}
-%		\end{minipage}%
-%		\begin{minipage}{0.5\textwidth}
-%			\centering
-%			\includegraphics[width=0.8\linewidth,height=0.45\textheight]{figures/loop_dev_vars.PNG}
-%			\caption{Loop in deviation variables}
-%			\label{fig:prob1_6_1}
-%		\end{minipage}
-%	\end{figure}
-%\begin{block}{Assumption 1}
-%	Let $f$ be a differentiable convex field with the minimum at $y_*$ satisfying
-%	\begin{equation*}
-%		m||y_1-y_2||^2 \leq  (\nabla f(y_1)-\nabla f(y_2))^T(y_1-y_2) \leq L ||y_1-y_2||^2 \quad \forall y_1,y_2.
-%	\end{equation*}
-%	
-%\end{block}
-%\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{Zames Falb IQCs}	
-%	\begin{figure}[t]
-%		\includegraphics[width=9cm]{figures/signal_definitions_p_q_w.PNG}
-%		%\input{figures/quadrotor_trajectory}
-%		%\caption{Block diagram}
-%		\centering
-%		%\label{fig:Figure_IQC_paper}
-%	\end{figure}
-%\textbf{Theorem:} Let $h \in \mathcal{L}_1(-\infty,\infty)$ satisfy
-%		\begin{equation} \label{eq:zf_impulse_resp_cond}
-%			\begin{aligned}
-%				h(s) &\geq 0, \quad \forall s \in \mathbb{R} \textnormal{ and } \int_{-\infty}^{\infty}h(s)ds &\leq H.
-%			\end{aligned}
-%		\end{equation}	
-%	Then, under the assumptions on $f$, $\forall T \geq 0$ and $\forall \tilde{y} \in \mathcal{L}_{2e}$,	
-%		\begin{equation}
-%			\int_0^T e^{2\alpha t}( H p(t)^T q(t) - p(t)^T w_1(t) - q(t)^T w_2(t)) dt \geq 0.
-%		\end{equation}
-%
-%\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{Parameterize $h(t)$}	
-%	
-%\begin{itemize}
-%\item Fix $A_{\nu}=
-%\begin{bmatrix} 
-%	\rho   & 0      &\dots     & 0 \\
-%	1      & \rho   & \ddots        &0  \\
-%	0      & \ddots      & \ddots     &0  \\
-%	\vdots & 0      & 1        &\rho  
-%\end{bmatrix},
-%B_{\nu}=
-%\begin{bmatrix} 
-%	1 \\
-%	0\\
-%	\vdots\\
-%	0 
-%\end{bmatrix}.$
-%\item Parameterize $h(t)$ as  
-%\begin{equation}\label{eq:h_defn}
-%	\begin{split}
-%		h(t)&=
-%		\begin{cases}
-%			P_1 e^{-A_{\nu}t}B_{\nu}, & \text{if}\ t<0 \\
-%			P_3 e^{A_{\nu}t}B_{\nu}, & \text{if}\ t\geq 0
-%		\end{cases}
-%	\end{split}
-%\end{equation}
-%\item If $\textnormal{LMI}(H,P_1,P_3)<0$, conditions on $h(t)$ hold [Scherer, 2013].
-%\item For searching over only causal(anti-causal) multipleirs, set $P_1=0$ ($P_3=0$)
-%\item For searching over static multipliers(Circle criterion), set $P_1=0$ and $P_3=0$
-%\end{itemize}
-%	
-%%	\begin{equation}
-%%		A_{\nu}=
-%%		\begin{bmatrix} 
-%%			\rho   & 0      &\dots     & 0 \\
-%%			1      & \rho   & \ddots        &0  \\
-%%			0      & \ddots      & \ddots     &0  \\
-%%			\vdots & 0      & 1        &\rho  
-%%		\end{bmatrix},
-%%		B_{\nu}=
-%%		\begin{bmatrix} 
-%%			1 \\
-%%			0\\
-%%			\vdots\\
-%%			0 
-%%		\end{bmatrix}.
-%%	\end{equation}
-%	
-%	
-%	
-%\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{Parameterize $h(t)$}
-%\begin{figure}[t]
-%	\includegraphics[width=9cm]{figures/signal_definitions.PNG}
-%	%\input{figures/quadrotor_trajectory}
-%	%\caption{Block diagram}
-%	\centering
-%	%\label{fig:Figure_IQC_paper}
-%\end{figure}
-%\begin{equation*}
-%	( H p^T q - p^T w_1 - q^T w_2)=		
-%	\tilde{z}^T
-%	\begin{bmatrix}
-%		\mathbf{0}  & \begin{bmatrix}
-%			H  & -P_3 \\
-%			-P_1^T    & \mathbf{0}
-%		\end{bmatrix} \\
-%		*    & \mathbf{0}
-%	\end{bmatrix}\tilde{z}
-%\end{equation*}	
-%Define $\mathbb{P}$ such that every $P \in \mathbb{P}$ generates a valid $h(t)$.	
-%\begin{equation*}
-%	\mathbb{P}=\left\{
-%	\begin{bmatrix}
-%		\mathbf{0}  & \begin{bmatrix}
-%			H  & -P_3 \\
-%			-P_1^T    & \mathbf{0}
-%		\end{bmatrix} \\
-%		*    & \mathbf{0}
-%	\end{bmatrix}: \textnormal{LMI}(H,P_1,P_3)<0
-%	\right\}
-%\end{equation*}
-%
-%
-%%Let the state space realization of $\Psi$ be 
-%%\begin{equation}\label{eq:ss_Psi}
-%%	\left[
-%%	\begin{array}{c|c}
-%%		A_{\Psi} & B_{\Psi} \\
-%%		\hline
-%%		C_{\Psi} & D_{\Psi}
-%%	\end{array}
-%%	\right]
-%%	=
-%%	\left[
-%%	\begin{array}{cc|cc}
-%%		A_{\nu}^{\alpha} \otimes I_d        &\mathbf{0}                         &-B_{\nu}\otimes mI_d       &B_{\nu}\otimes I_d \\
-%%		\mathbf{0}                          &A_{\nu}^{\alpha} \otimes I_d       &B_{\nu}\otimes LI_d        &-B_{\nu}\otimes I_d \\
-%%		\hline
-%%		\mathbf{0}                          &\mathbf{0}                         &-mI_d                      &I_d \\
-%%		I_{\nu}\otimes I_d                  &\mathbf{0}                         &\mathbf{0}                 &\mathbf{0}\\
-%%		\mathbf{0}                          &\mathbf{0}                         &LI_d                       &-I_d\\
-%%		\mathbf{0}                          &I_{\nu}\otimes I_d                 &\mathbf{0}                 &\mathbf{0}
-%%	\end{array}
-%%	\right].
-%%\end{equation}
-%\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{Theory}
-%	\begin{figure}[t]
-%	\includegraphics[width=5cm]{figures/Psi_GI.PNG}
-%	%\input{figures/quadrotor_trajectory}
-%	% \caption{Block diagram}
-%	\centering
-%	%\label{fig:Figure_IQC_paper}
-%	\end{figure}
-%\begin{theorem}\label{theom:theorem_perf_analysis}
-%	If $\exists \mathcal{X}>0,P \in \mathbb{P}$ such that
-%	\begin{equation}\label{eq:perf_LMI}
-%		\begin{bmatrix}
-%			\mathcal{A}^T\mathcal{X}+\mathcal{X}\mathcal{A}+2\alpha \mathcal{X}  & \mathcal{X}\mathcal{B} \\
-%			\mathcal{B}^T\mathcal{X}    & \mathbf{0}
-%		\end{bmatrix}
-%		+
-%		\begin{bmatrix}
-%			\mathcal{C}^T \\
-%			\mathcal{D}^T 
-%		\end{bmatrix}
-%		( P\otimes I_d)
-%		\begin{bmatrix}
-%			\mathcal{C} & \mathcal{D} 
-%		\end{bmatrix}
-%		\leq 
-%		0,
-%	\end{equation}
-%	then, $y$ converges exponentially to $y_*$ with rate $\alpha$, i.e., $\exists \kappa \geq 0$ such that  
-%	$||\Tilde{y}(t)||\leq \kappa e^{-\alpha t}$ holds for all $t\geq 0$.
-%\end{theorem}
-%\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Numerical results for a single quadrotor}
-\begin{figure}[ht]
-	\input{figures/control_arch}
-	%\caption{Control architecture}	
-\end{figure}
-	\begin{block}{Setup}
-		\begin{itemize}
-			\item Linearized quadrotor model + LQR local controller
-			\item Questions:
-				  \begin{itemize}
-				  	\item How robust is the given controller for different fields?
-				  	\item How do we select the PD gains for the pre-filter?
-				  	\item How conservative are the estimates on the rates of convergence?
-			  	  \end{itemize}
+			\item[1] $||\Delta||\leq \delta$
+			\item[2] $0 \prec m \cdot I\preceq \nabla^2 f(y) \preceq L\cdot I$ (\textcolor{red}{Notation: $f\in \mathcal{S}(m,L)$}) 
 		\end{itemize}
 	\end{block}	
+%		\begin{block}{Multiplicative Noise}
+%			%	\begin{Problem} \label{prob:formation_control}
+%			Let $0 \prec m \cdot I\preceq \nabla^2 f(y) \preceq L\cdot I$ (\textcolor{red}{Notation: $f\in \mathcal{S}(m,L)$}), derive sufficient conditions (LMIs) independent of network size under which the state trajectories 
+%			\begin{itemize}
+%				\item[1)] remain bounded for all $t\geq 0$
+%				\item[2)] $\exists \kappa$ such that $||y(t)-y_*(t)||\leq \kappa e^{-\alpha t}$ holds for all $t\geq 0$
+%			\end{itemize}
+%			%	remain bounded for all $t\geq 0$ and $\exists \kappa \geq 0$ such that $||y(t)-y_*(t)||\leq \kappa e^{-\alpha t}$ holds for all $t\geq 0$.
+%			%	\end{Problem}
+%		\end{block}
+	\end{overprint}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Robustness w.r.t scalar field for a single quadrotor}	
-	\begin{figure}[t]
-		%\includegraphics[width=8cm]{figures/Figure_IQC_paper.PNG}
-		\input{figures/robustness_quadrotor}
-		\caption{Robustness for Quadrotor and $m=1$}
-		\centering
-		\label{fig:quadrotor_robustness}
-	\end{figure}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{Tuning $kp,kd$ for a single quadrotor}
-%	\begin{figure}[t]
-%		%\includegraphics[width=8cm]{figures/Figure_IQC_paper.PNG}
-%		\input{figures/optimal_kd_kp_ratio}
-%		\caption{Robustness for Quadrotor and $m=1$}
-%		\centering
-%		\label{fig:optimal_kd_kp_ratio}
-%	\end{figure}
-%\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{Quadrotor trajectory with a single quadrotor}	
-%	Change the Figure
-%	\begin{figure}[t]
-%		\includegraphics[width=8cm]{figures/quadrotor_trajectory.JPG}
-%		%\input{figures/quadrotor_trajectory}
-%		\caption{Robustness for Quadrotor and $m=1$}
-%		\centering
-%		\label{fig:quadrotor_trajectory}
-%	\end{figure}
-%\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Extension: Multiple agents}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Control Architecture: Multiple agents}
 	\begin{equation*} %\label{eq:sys_dyn_G}
 		\begin{split}
-			\Dot{\hat{\eta}}(t)&=\hat{A}_G\hat{\eta}(t) + \hat{B}_G \hat{u}(t), \quad \quad \hat{\eta}(0)=\hat{\eta}_{0},\\
-			\hat{y}(t)&=\hat{C}_G \hat{\eta}(t). \\
+			\Dot{{\eta}}(t)&=\hat{A}_G(\rho(t)){\eta}(t) + \hat{B}_G(\rho(t)) {u}(t), \quad \quad {\eta}(0)={\eta}_{0},\\
+			{y}(t)&=\hat{C}_G(\rho(t)) {\eta}(t). \\
 		\end{split}
 	\end{equation*}
-where, notation $\hat{X}=I_N \otimes X$ and $\hat{x}=[x_1^T,\hdots,x_N^T]^T$ is used.
-\pause
-\begin{block}{Formation control law with gradient-based forcing term}
-\begin{equation}\label{eq:control_law}
-	\hat{u}=\mathcal{L}_{(d)}(\hat{y}-\hat{r})+\begin{bmatrix}u_{\psi_1}\\ \vdots \\u_{\psi_N}\end{bmatrix}.
-\end{equation}
-
-\begin{equation}\label{eq:forcing_term}
-	\begin{split}
-		u_{\psi_i}(t)&=
-		\begin{cases}
-			\nabla \psi(y_i), & \text{if}\ i\in \mathcal{V}_l, \\
-			0, & \text{otherwise}.
-		\end{cases}
-	\end{split}
-\end{equation}
-\end{block}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Control Architecture: Multiple agents}
-\begin{figure}[ht]
-	\input{figures/formation_control_arch_ss}
-	\caption{Control architecture}
-	%\label{fig:control_architecture}	
-\end{figure}
-%	\begin{equation} \label{eq:sys_dyn_G}
-%		\begin{split}
-%			\Dot{\hat{\eta}}(t)&=\hat{A}_G\hat{\eta}(t) + \hat{B}_G \hat{u}(t), \quad \quad \hat{\eta}(0)=\hat{\eta}_{0},\\
-%			\hat{y}(t)&=\hat{C}_G \hat{\eta}(t). \\
-%			\hat{u}(t)&=\mathcal{L}_{(d)}(\hat{y}-\hat{r})+\begin{bmatrix}0\\ \vdots \\ \nabla \psi(y_i)\\ \vdots \\ 0 \end{bmatrix} \leftarrow \textnormal{ if } i\in \mathcal{V}_l 
-%		\end{split}
-%	\end{equation}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Formulation as a robust control problem}
-	\begin{block}{Definition}	
-		For a given graph $\mathcal{G}$ of order $N$ (with its corresponding laplacian $\mathcal{L}$), the leader set $\mathcal{V}_l$, a scalar field $\psi$ and a given formation reference vector $\hat{r} \in \mathbb{R}^{Nd}$, define a function $f:\mathbb{R}^{Nd}\rightarrow \mathbb{R}$ by
-		\begin{equation}\label{eq:defn_f}
-			f(\hat{y})=\frac{1}{2}(\hat{y}-\hat{r})^T\mathcal{L}_{(d)}(\hat{y}-\hat{r}) + \sum_{v_i \in \mathcal{V}_l} \psi(y_i).
-		\end{equation}	
-	\end{block}
-	\pause
-	\begin{block}{Overall close-loop system}
-	\begin{equation} \label{eq:sys_dyn_G_hat}
-		\begin{split}
-			\Dot{\hat{\eta}}(t)&=\hat{A}_G\hat{\eta}(t) + \hat{B}_G \hat{u}(t), \quad \quad \hat{\eta}(0)=\hat{\eta}_{0},\\
-			\hat{y}(t)&=\hat{C}_G \hat{\eta}(t), \\
-			\hat{u}(t)&=\nabla f (\hat{y}(t)).
-		\end{split}
-	\end{equation}
-	\end{block}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Recall Theorem 1}
-	\begin{equation*}
-	\begin{split}
-		\left[\begin{array}{c|c}
-			\mathcal{A}     &  \mathcal{B}\\
-			\hline
-			\mathcal{C}     &  \mathcal{D}
-		\end{array}\right]&=
-		(\Pi \otimes I_N)\begin{bmatrix}
-			\hat{G}\\
-			I_{Nd}
-		\end{bmatrix}
-		=
-		\left[
-		\begin{array}{c|c}
-			A_{\Pi} \otimes I_{N} & B_{\Pi} \otimes I_{N} \\
-			\hline
-			C_{\Pi} \otimes I_{N} & D_{\Pi} \otimes I_{N}
-		\end{array}
-		\right]\left[\begin{array}{c|c}
-			\hat{A}_G     &  \hat{B}_G\\
-			\hline		
-			\hat{C}_G     &  \mathbf{0} \\
-			\mathbf{0}     			&  I_{Nd}
-		\end{array}\right]
-	\end{split}
-	\end{equation*}
-\pause 
-\begin{block}{Theorem 1 applied to the overall networked system}
-	If $f\in \mathcal{S}(m,L)$, $y_*$ minimizes $f$ and $\exists \mathcal{X}>0,P \in \mathbb{P}$ such that
-	\begin{equation*}%\label{eq:perf_LMI}
-		\begin{bmatrix}
-			\mathcal{A}^T\mathcal{X}+\mathcal{X}\mathcal{A}+2\alpha \mathcal{X}  & \mathcal{X}\mathcal{B} \\
-			\mathcal{B}^T\mathcal{X}    & \mathbf{0}
-		\end{bmatrix}
-		+
-		\begin{bmatrix}
-			\mathcal{C}^T \\
-			\mathcal{D}^T 
-		\end{bmatrix}
-		( P\otimes I_{Nd})
-		\begin{bmatrix}
-			\mathcal{C} & \mathcal{D} 
-		\end{bmatrix}
-		\leq 
-		0,
-	\end{equation*}
-	then, $||y(t)-y_*(t)||\leq \kappa e^{-\alpha t}$ holds for all $t\geq 0$
-\end{block}
-\pause 
-\begin{block}{Questions}
-\begin{itemize}
-	\item[1] How to characterize minimizers of $f$?
-	\item[2] How to verify if $f\in \mathcal{S}(m,L)$?
-	\item[3] Can we exploit this structure in the LMIs?   
-\end{itemize}
-\end{block}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{1. Minimizers of $f$}
-	\begin{block}{Recall definiteion of $f$}
-		$$f(\hat{y})=\frac{1}{2}(\hat{y}-\hat{r})^T\mathcal{L}_{(d)}(\hat{y}-\hat{r}) + \sum_{v_i \in \mathcal{V}_l} \psi(y_i).$$		
-	\end{block}
-	\pause
-	\begin{block}{Assumptions}
-	\begin{itemize}
-		\item[1] Let $\psi \in \mathcal{S}(m_{\psi},L_{\psi})$ for some $0<m_{\psi}\leq L_{\psi}$ and let $y_*$ minimize $\psi$.
-		\item[2] For every node $v_i \in \mathcal{V}$, there is a node $v_j \in \mathcal{V}_l$ such that $\mathcal{G}$ contains an $i-j$ path.
-	\end{itemize}
-	\end{block}
-\pause 
-\begin{block}{Separately consider the cases}
-\begin{itemize} 
-	\item[1] Consensus $\hat{r}=\mathbf{0},|\mathcal{V}_l|\geq 1$
-	\item[2] Formation control with single leader $\hat{r}\neq \mathbf{0}$, $|\mathcal{V}_l|=1$
-	\item[3] Formation control with multiple leaders $\hat{r}\neq \mathbf{0}$, $|\mathcal{V}_l|>1$
-\end{itemize}
-\end{block}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{1. Minimizers of $f$}
-	\begin{block}{Recall definiteion of $f$}
-		$$f(\hat{y})=\frac{1}{2}(\hat{y}-\hat{r})^T\mathcal{L}_{(d)}(\hat{y}-\hat{r}) + \sum_{v_i \in \mathcal{V}_l} \psi(y_i).$$		
-	\end{block}
-	\begin{block}{Lemma (Consensus)}
-	Let Assumptions 1 and 2 hold and let $\hat{r}=0$.
-	Then, $\hat{y}$ is the minimizer of $f$ iff $\hat{y}=\mathbf{1}_N \otimes y_*$.
-	\end{block}
-\pause 
-\begin{block}{Lemma(Formation with one leader)}
-	Let Assumptions 1 and 2 hold and let $|\mathcal{V}_l|=1$.
-	Then, $\hat{y}$ is the minimizer of $f$ iff $\hat{y}_i=y_*$ for $i \in \mathcal{V}_l$ and $y_j=y_*+(r_j-r_i)$ for all $j \in \mathcal{V}$.
-\end{block}
-\pause 
-\begin{block}{Conjecture (Formation with multiple leaders)}
-	Let Assumptions 1 and 2 hold. 
-	The unique minimizer $y_*$ of $\psi$ lies in the convex hull of positions of leader agents. 
-	%Furthermore, for quadratic fields, the average positions of the leaders coincides with $y_*$.
-\end{block}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{2. Smoothness and convexity of $f$}
-\begin{block}{Definition of grounded Laplacians}
-	Define grounded Laplacians
-	\begin{equation} \label{eq:Lgs_defn}
-		\begin{split}
-			\mathcal{L}_s&=\mathcal{L}+m_{\psi} E, \\
-			\mathcal{L}_b&=\mathcal{L}+L_{\psi} E, \\
-		\end{split}
-	\end{equation}
-	where, $E$ is a diagonal matrix with the $i^{th}$ diagonal entry equal to $1$ if $i \in \mathcal{V}_l$ and equal to $0$ otherwise.
-\end{block}
-\pause 
-\begin{block}{Lemma}
-	For constants $0<m \leq L$, the following two statements are equivalent:
-\begin{enumerate}
-	\item $f\in \mathcal{S}(m,L) \textnormal{ for all } \psi \in \mathcal{S}(m_{\psi},L_{\psi})$,
-	\item $m I_N \preceq  \mathcal{L}_b \preceq \mathcal{L}_s \preceq L I_N$
-\end{enumerate}
-\end{block}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{3. Decomposition}
-	\begin{block}{Define}
-		$\left[\begin{array}{c|c}
-			\mathcal{A}     &  \mathcal{B}\\
-			\hline
-			\mathcal{C}     &  \mathcal{D}
-		\end{array}\right]=
-		(\Pi \otimes I_N)\begin{bmatrix}
-			\hat{G}\\
-			I_{Nd}
-		\end{bmatrix}$ and $
-		\left[\begin{array}{c|c}
-			\mathcal{A}_0     &  \mathcal{B}_0\\
-			\hline
-			\mathcal{C}_0     &  \mathcal{D}_0
-		\end{array}\right]=
-		\Pi\begin{bmatrix}
-			G\\
-			I_{d}
-		\end{bmatrix}$
-	\end{block}
-		\pause 
-		\begin{equation}\label{eq:perf_LMI}
-				\begin{bmatrix}
-					\mathcal{A}^T\mathcal{X}+\mathcal{X}\mathcal{A}+2\alpha \mathcal{X}  & \mathcal{X}\mathcal{B} \\
-					\mathcal{B}^T\mathcal{X}    & \mathbf{0}
-				\end{bmatrix}
-				+
-				(*)
-				( P\otimes I_{Nd})
-				\begin{bmatrix}
-					\mathcal{C} & \mathcal{D} 
-				\end{bmatrix}
-				\leq 
-				0,
-			\end{equation}	
-		\begin{equation}\label{eq:perf_LMI_small}
-			\begin{bmatrix}
-				\mathcal{A}_0^T\mathcal{X}_0+\mathcal{X}_0\mathcal{A}_0+2\alpha \mathcal{X}_0  & \mathcal{X}_0\mathcal{B}_0 \\
-				\mathcal{B}_0^T\mathcal{X}_0    & \mathbf{0}
-			\end{bmatrix}
-			+
-			(*)
-			( P\otimes I_{d})
-			\begin{bmatrix}
-				\mathcal{C}_0 & \mathcal{D}_0 
-			\end{bmatrix}
-			\leq 
-			0,
+	where, notation $\hat{X}=I_N \otimes X$ and ${x}=[x_1^T,\hdots,x_N^T]^T$ is used.
+	%	\pause
+	\begin{block}{Formation control law with gradient-based forcing term}
+		\begin{equation}\label{eq:control_law}
+			{u}=\mathcal{L}_{(d)}({y}-{r})+\begin{bmatrix}u_{\psi_1}\\ \vdots \\u_{\psi_N}\end{bmatrix}.
 		\end{equation}
-	\pause 
-	\begin{block}{Theorem}
-	The following statements are equivalent:
-	\begin{enumerate}
-		\item $\exists \mathcal{X}>0,P \in \mathbb{P}$ such that \eqref{eq:perf_LMI} is satisfied.
-		\item $\exists \mathcal{X}_0>0,P \in \mathbb{P}$ such that \eqref{eq:perf_LMI_small} is satisfied.
-	\end{enumerate}	
+		
+		\begin{equation}\label{eq:forcing_term}
+			\begin{split}
+				u_{\psi_i}(t)&=
+				\begin{cases}
+					\nabla \psi(y_i), & \text{if}\ i\in \mathcal{V}_l, \\
+					0, & \text{otherwise}.
+				\end{cases}
+			\end{split}
+		\end{equation}
 	\end{block}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Final Analysis result}
-	\begin{block}{Definition}
-	\begin{equation}
-		\begin{split}
-		\Delta_{m,L}&=\{(\mathcal{G},\mathcal{V}_l,\psi):\psi \in \mathcal{S}(m_{\psi},L_{\psi}),f \in \mathcal{S}(m,L) \}\\
-			&=\{(\mathcal{G},\mathcal{V}_l,\psi):\psi \in \mathcal{S}(m_{\psi},L_{\psi}),m I_N \preceq  \mathcal{L}_b \preceq \mathcal{L}_s \preceq L I_N \}
-		\end{split}		
-	\end{equation}
-	\end{block}
+\begin{frame}{qLPV modeling}
+\begin{block}{Assume}
+There exists a function $g:\mathbb{R}^{n_{\eta}}\rightarrow\mathbb{R}^{n_{\rho}}$ such that $\rho(t)=g(\eta(t))\quad t\in[0,\infty)$ and there exists $c\geq 0$ such that 
+\begin{equation*}
+	\mathcal{B}(\eta_*,c)=\left\{ \eta:||\eta-\eta_*|| \leq c \right\} \subset \{\eta\in \mathbb{R}^{n_{\eta}}:g(\eta)\in \mathcal{P}\}=:\mathcal{P}^{-1}_g
+\end{equation*}
+\end{block}
 \pause 
-\begin{theorem}
-	Let $(\mathcal{G},\mathcal{V}_l,\psi) \in \Delta_{m,L}$ for some $0<m\leq L$.
-	If $\exists \mathcal{X}_0>0,P \in \mathbb{P}$ such that 
-	\begin{equation}%\label{eq:perf_LMI_small}
-		\begin{bmatrix}
-			\mathcal{A}_0^T\mathcal{X}_0+\mathcal{X}_0\mathcal{A}_0+2\alpha \mathcal{X}_0  & \mathcal{X}_0\mathcal{B}_0 \\
-			\mathcal{B}_0^T\mathcal{X}_0    & \mathbf{0}
-		\end{bmatrix}
-		+
-		(*)
-		( P\otimes I_{d})
-		\begin{bmatrix}
-			\mathcal{C}_0 & \mathcal{D}_0 
-		\end{bmatrix}
-		\leq 
-		0,
-	\end{equation} is satisfied, then, $||y(t)-y_*(t)||\leq \kappa e^{-\alpha t}$ holds for all $t\geq 0$.
-\end{theorem}
+\begin{block}{Examples with $\eta=[x_1\quad x_2]^T$, $g:\mathbb{R}^2\rightarrow \mathbb{R}$, $\mathcal{P}=[-0.5,0.5]$}
+\end{block}
+%\begin{overprint}
+%\onslide<+>
+%1: $\rho=x_1$
+%\onslide<+>
+%2: $\rho=x_1+\textnormal{sign}(x_2)$
+%\end{overprint}
+%\vspace{2cm}
+\begin{figure}
+	
+\begin{minipage}{.5\textwidth}
+	\centering
+	$\rho=x_1$
+	\includegraphics[width=0.9\linewidth,height=0.43\textheight]{figures/sched_para_map_valid.jpg}
+	%\caption{Single quadrotor}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+	\centering
+	$\rho=x_1+\textnormal{sign}(x_2)$
+	\includegraphics[width=0.9\linewidth,height=0.43\textheight]{figures/sched_para_map_invalid.jpg}
+	%\caption{Multiple quadrotors}
+\end{minipage}
+\end{figure}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Numerical results}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Example 1: Conservatism}
-$\Delta_1 = \{(\mathcal{G},\mathcal{V}_l,\psi):\mathcal{G}=\mathcal{G}_{\textnormal{star}}^5,\mathcal{V}_l=\{1\} , \psi \in \mathcal{S}(2.02,L_{\psi})\} \subset \Delta_{0.3,L}$
+\begin{frame}{Main Result}
+	\begin{block}{Theorem}	
+			If there exist $\mathcal{X}_0\succ 0,P \in \mathbb{P}$, $\lambda \geq 0$ such that 
+			\begin{align}\label{eq:perf_LMI_noise_single}
+				%		\begin{split}
+				&\begin{bmatrix}
+					\mathcal{A}_0(\tilde{\rho})^T\mathcal{X}_0+\mathcal{X}\mathcal{A}_0(\tilde{\rho})+2\alpha \mathcal{X}_0  & (*) \\
+					\mathcal{B}_0(\tilde{\rho})^T\mathcal{X}_0    & \mathbf{0}
+				\end{bmatrix} \nonumber \\
+				&\hspace{0.1cm}+			
+				(*)
+				\begin{bmatrix}
+					P \otimes I_d &\\&\lambda (M \otimes I_d)
+				\end{bmatrix}
+				\begin{bmatrix}
+					\mathcal{C}_{10}(\tilde{\rho}) & \mathcal{D}_{10}\\
+					\mathcal{C}_{20} &\mathcal{D}_{20}\\
+				\end{bmatrix}
+				\preceq 
+				0,
+				%		\end{split}
+			\end{align}
+		holds for all $\tilde{\rho} \in \mathcal{P}$,
+			then for all initial conditions $\eta_0$ such that $||\eta_0-\eta_*||< \frac{c}{\sqrt{\textnormal{cond}(\mathcal{X})}}$, the trajectories converge to the equilibrium exponentially at rate $\alpha$.
+	\end{block}
 
-$\Delta_2 = \{(\mathcal{G}^{25},\mathcal{V}_l,\psi):\psi = 1.85 ||y-y_*||^2 \} \subset \Delta_{m,L}$
-\begin{figure}[t]
-	%\includegraphics[width=8cm]{figures/Figure_IQC_paper.PNG}
-	\input{figures/conservatism_consensus_LTI}
-	\caption{Convergence rate estimates for quadrotor dynamics provided by different multipliers(See Remark \ref{rem:CC_ZF_cusal}) for fields $f\in \mathcal{S}(1,L)$}
-	\centering
-	%\label{fig:quadrotor_robustness}
-\end{figure}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Example 2: Spectrum of Laplacian unknown}
-Assume:
-\begin{itemize}
-	\item[i] At least one third of total number of agents are leaders
-	\item[ii] Maximum degree of all agents is $2$				
-	\item[iii] Every agent has an edge with at least one leader
-\end{itemize}
-\begin{figure}[]	
-	\centering
-		\begin{overprint}
-			\onslide<1>\includegraphics[scale=0.65]{figures/graph_nodes_0.jpg}	
-			\onslide<2>\includegraphics[scale=0.65]{figures/graph_minimal_1.jpg}	
-			\onslide<3>\includegraphics[scale=0.65]{figures/graph_example_2.jpg}	
-			\onslide<4>\includegraphics[scale=0.65]{figures/graph_example_3.jpg}
-			\onslide<5>\includegraphics[scale=0.65]{figures/graph_example_4.jpg}	
-			\onslide<6->\includegraphics[scale=0.65]{figures/graph_example_5.jpg}	
-		\end{overprint}	
-\end{figure}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Example 2: Spectrum of Laplacian unknown}
-	Assume:
-	\begin{itemize}
-		\item[i] At least one third of total number of agents are leaders
-		\item[ii] Maximum degree of all agents is $2$				
-		\item[iii] Every agent has an edge with at least one leader
-	\end{itemize}
-\begin{figure}[!htb]
-	\centering
-	\begin{minipage}{.5\textwidth}
-		\centering
-		\includegraphics[scale=0.32]{figures/graph_example_2.jpg} \\
-		\centering
-		\includegraphics[scale=0.32]{figures/graph_example_3.jpg}
-	\end{minipage}%
-	\begin{minipage}{0.5\textwidth}
-		\centering
-		\includegraphics[scale=0.32]{figures/graph_example_4.jpg}\\
-		\centering
-		\includegraphics[scale=0.32]{figures/graph_example_5.jpg}
-	\end{minipage}
-\end{figure}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Example 2: Spectrum of Laplacian unknown}
+\begin{frame}{Numerical results for a single LTI quadrotor}
+	\begin{figure}[ht]
+		\input{figures/control_arch}
+		%\caption{Control architecture}	
+	\end{figure}
 	\begin{block}{Setup}
 		\begin{itemize}
-			\item Linearized quadrotor model + LQR tracking local controller
-			\item[1] Conditions on the graph
-			\begin{itemize}
-				\item[i] At least one third of total number of agents are leaders, i.e., $|\mathcal{V}_l|\geq |\mathcal{V}|$.
-				\item[ii] Maximum degree of all agents is $3$				
-				\item[iii] Every agent has an edge with at least one leader, i.e., For any $i \in \mathcal{V}$, there is a $j \in \mathcal{V}_l$ such that $(i,j) \in \mathcal{E}$
-			\end{itemize}
-			\item[2] Let $\psi \in \mathcal{S}(1,L_{\psi})$	
-			\item Let $\bar{\Delta}=\{(\mathcal{G},\mathcal{V}_l,\psi): (1),(2)\}$	
-			\item Can show: $\bar{\Delta}\subset \Delta_{m,L}$ with $m=0.3$ and $L=L_{\psi}+2*3$				
+			\item Linearized quadrotor model + LQR local controller
+			\item $||\Delta||\leq \delta$
 		\end{itemize}
-	\end{block}
+	\end{block}	
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Example 2: Spectrum of Laplacian unknown}
-	\begin{figure}[t]
+\begin{frame}{Designing $k_d$ for largest convergence rate estimate $\alpha$}
+	\begin{figure}[h!]
 		%\includegraphics[width=8cm]{figures/Figure_IQC_paper.PNG}
-		\input{figures/conservatism_consensus_LTI_unknown_spectrum}
 		\centering
-		%\label{fig:quadrotor_robustness}
+		\input{figures/optimal_kd_kp_ratio_ZF_noisy}
+%		\caption{Performance estimates for quadrotor dynamics provided by first order ZF multipliers for $\psi \in \mathcal{S}(1,10)$ and varying $k_d$ with different bound $\delta \in \{0.1,0.2\cdots,0.9\}$ on the multiplicative noise (see Assumption \ref{assum:noise}).}
+		\label{fig:quadrotor_optimal_kd_ZF_noisy}
 	\end{figure}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{References}
-%	\begin{itemize}
-%		\item[1] C.  Scherer,  “Dissipativity  and  integral  quadratic  constraints,  tailoredcomputational robustness tests for complex interconnections.” [Online].Available: https://arxiv.org/pdf/2105.07401
-%		\item[2]  M.  Fazlyab,  A.  Ribeiro,  M. Morari,  and  V.  M.  Preciado,  “Analysis  ofoptimization algorithms via integral quadratic constraints: Nonstronglyconvex  problems,”SIAM  Journal  on  Optimization,  vol.  28,  no.  3,  pp.2654–2689, 2018.
-%		\item[3]  A.  Datar,  P.  Paulsen,  and  H.  Werner,  “Flocking  towards  the  source:Indoor experiments with quadrotors,” in2020 European Control Con-ference (ECC).    IEEE, 5/12/2020 - 5/15/2020, pp. 1638–1643.
-%		\item[4]  A.  Attallah,  A.  Datar,  and  H.  Werner,  “Flocking  of  linear  parametervarying  agents:  Source  seeking  application  with  underwater  vehicles,”IFAC-PapersOnLine, vol. 53, no. 2, pp. 7305–7311, 2020.		
-%	\end{itemize}
-%\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{References}
-%	\begin{itemize}		
-%		\item[5]  L.  Lessard,  B.  Recht,  and  A.  Packard,  “Analysis  and  design  of  opti-mization  algorithms  via  integral  quadratic  constraints,”SIAM  Journalon Optimization, vol. 26, no. 1, pp. 57–95, 2016.
-%		\item[6]  B.  Hu  and  P.  Seiler,  “Exponential  decay  rate  conditions  for  uncertainlinear systems using integral quadratic constraints,”IEEE Transactionson Automatic Control, vol. 61, no. 11, pp. 3631–3637, 2016.
-%		\item[7]  R. A. Freeman, “Noncausal zames-falb multipliers for tighter estimatesof  exponential  convergence  rates,”  in2018  Annual  American  ControlConference (ACC).    IEEE, 6/27/2018 - 6/29/2018, pp. 2984–2989.
-%		\item[8]  J.   Veenman   and   C.   W.   Scherer,   “Stability   analysis   with   integralquadratic  constraints:  A  dissipativity  based  proof,”  in52nd  IEEEConference on Decision and Control, 2013, pp. 3770–3775.
-%	\end{itemize}
-%\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{References}
-%	\begin{itemize}		
-%		\item[9]  J.    Zhang,    P.    Seiler,    and    J.    Carrasco,    “Noncausal    fir    zames-falb  multiplier  search  for  exponential  convergence  rate.”  [Online].Available: https://arxiv.org/pdf/1902.09473
-%	\end{itemize}
-%\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conservatism estimation by searching for examples}
+	\begin{figure}[h!]
+		%\includegraphics[width=8cm]{figures/Figure_IQC_paper.PNG}
+		\centering
+		\input{figures/optimal_kd_kp_ratio_ZF_noisy_conservatism_2}
+%		\caption{Conservatism analysis for quadrotor dynamics provided by first order ZF multipliers for $\psi \in \mathcal{S}(1,10)$ and varying $k_d$ with different bound $\delta \in \{0.1,0.2\cdots,0.9\}$ on the multiplicative noise (see Assumption \ref{assum:noise}).}
+		\label{fig:quadrotor_optimal_kd_ZF_noisy_conservatism}
+	\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Non-linear Friction Model}
+	\begin{block}{Dynamics}
+	\begin{equation}\label{eq:NLFsat}
+		m\ddot{x}+b\vert\dot{x}\vert\dot{x} = u_F, 
+	\end{equation}
+	\end{block}
+\begin{block}{qLPV representation}
+\begin{equation}\label{eq:NLFssLPV}
+	\begin{split}
+		\begin{bmatrix} \dot{x}_{\textnormal{pos}}\\ \dot{x}_{\textnormal{vel}} \end{bmatrix} 
+		&= 
+		\begin{bmatrix} 0 & 1 \\ 0 & -\tfrac{b}{m}\rho \end{bmatrix} 
+		\begin{bmatrix} x_{\textnormal{pos}}\\ x_{\textnormal{vel}} \end{bmatrix} 
+		+
+		\begin{bmatrix} 0 \\ \tfrac{1}{m} \end{bmatrix} 
+		u_F
+		\\[1mm]
+		y
+		&=
+		\begin{bmatrix} 1 & 0 \end{bmatrix}
+		\begin{bmatrix} x_{\textnormal{pos}}\\ x_{\textnormal{vel}} \end{bmatrix}
+		\\[3mm]
+		\rho(t) 
+		&=
+		\vert x_{\textnormal{vel}}(t)\vert,
+		% \quad\rho :t \rightarrow \left[0,\,v_{\scaleto{\text{MAX}}{2.5pt}}\right]
+	\end{split}
+\end{equation}
+\begin{block}{Synthesize an LPV controller on $\mathcal{P}=[0,5]$}
+\end{block}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Designing $k_d$ for largest convergence rate estimate $\alpha$}
+	\begin{figure}[h!]
+		\centering
+		\input{figures/KdvsAlpha_Delta_L70_v3}
+%		\caption{Variation of $k_d$ and $\delta$: convergence rates for different $k_d$ values and fixed $f \in \mathcal{S}(1,70)$ guaranteed by first order ZF multipliers.}
+		\label{fig:KdvsAlpha_Delta_L70}
+	\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Noise can destabilize the dynamics}
+	\begin{figure}[h!]
+		\centering
+		\input{figures/1AgentNoise_v2}\\
+		\caption{Single agent with noisy gradient and different values of $k_d$ optimized for $\delta=0$ and $\delta=0.5$ respectively.}
+		\label{fig:1AgentNoise}
+	\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Consensus at Source With $\delta=0.5$}
+\begin{figure}[h!]
+	\centering
+	\input{figures/10agents_v2}\\
+%	\caption{MAS scenario where 10 agents start at random initial conditions and reach the source of the field $\psi\in\mathcal{S}(1,66)$ with gradient noise $\delta= 0.5$ and $k_d=100$.}
+	\label{fig:MAS}
+\end{figure}
+\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{}
 \begin{center}
@@ -842,85 +318,30 @@ Assume:
 \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{Decomposing flocking dynamics under quadratic fields}
-%	\begin{figure}[t]
-%		\includegraphics[width=6cm]{figures/loop_multiple_agents.PNG}
-%		%\input{figures/quadrotor_trajectory}
-%		\caption{Block diagram}
-%		\centering
-%		%\label{fig:Figure_IQC_paper}
-%	\end{figure}
-%	\begin{equation} \label{eq:flocking_dynamics}
-%		\begin{split}
-%			\Dot{\hat{\eta}}(t)&=(I_N \otimes A_G)\hat{\eta}(t) + (I_N \otimes B_G)\hat{u}(t),\\
-%			\hat{y}(t)&=(I_N \otimes C_G)\hat{\eta}(t) \\
-%			\hat{u}(t)&=\nabla \hat{f}(\hat{y}(t))-\nabla \mathcal{V}(\hat{y}(t))-(\mathcal{L}\otimes I_d)\Dot{\hat{y}}(t).
-%		\end{split}
-%	\end{equation}
-%\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{Decomposing flocking dynamics under quadratic fields}
-%	\begin{block}{Averaging out state, input and output:Center Of Mass(COM)} $\eta_c=\textnormal{avg}(\hat{\eta})$, $y_c=\textnormal{avg}(\hat{y})$, $u_c=\textnormal{avg}(\hat{u})$
-%	\end{block}
-%	\begin{block}{Quadratic fields (Linear gradients)}
-%		\begin{itemize}
-%			\item $f(y)=y^T Q y + c^Ty + d \implies \nabla f (y)=2 Qy + c$
-%			\item $\textnormal{avg}(\nabla \hat{f}(\hat{y}))=\nabla f (\textnormal{avg}(\hat{y}))=\nabla f(y_c)$
-%		\end{itemize}
-%	\end{block}
-%	\begin{block}{Averaging dynamics \eqref{eq:flocking_dynamics}}
-%		\begin{itemize}
-%			\item $\textnormal{avg}((I_N \otimes A_G)\hat{\eta})=A_G{\eta_c}$ (Similary for $B_G$ and $C_G$)
-%			\item $\textnormal{avg}(\nabla \mathcal{V}(\hat{y}))=\mathbf{0}$,$\textnormal{avg}((\mathcal{L}\otimes I_d))=\mathbf{0}$ 
-%		\end{itemize}
-%	\end{block}
-%	\begin{equation}\label{eq:COM_dynamics}
-%		\begin{split}
-%			\Dot{\eta_c}(t)
-%			% &=\frac{1}{N}(\mathbf{1}_N^T \otimes I_{n_\eta})((I_N \otimes A_G)\hat{\eta}(t) + (I_N \otimes B_G)\hat{u}(t)),\\
-%			% &=\frac{1}{N}(\mathbf{1}_N^T \otimes A_G)\hat{\eta}(t)+ \frac{1}{N}(\mathbf{1}_N^T \otimes B_G )\hat{u}(t)),\\
-%			&=A_G \eta_c + B_G u_c,\\
-%			\hat{y}_c(t)
-%			% &=\frac{1}{N}(\mathbf{1}_N^T \otimes I_{d})(I_N \otimes C_G)\hat{\eta}(t) \\
-%			&= C_G \eta_c\\
-%			\hat{u}_c(t)&=\nabla f (y_c).
-%		\end{split}
-%	\end{equation}
-%\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{Abstracting to a Mathematical Problem}	
-%\begin{block}{Problem Statement:}
-%Design distributed control algorithms for large networks of mobile robots such that the group shows a desirable behavior.
-%\end{block}
-%\begin{itemize}
-%	\item Desirable behaviors we consider:
-%	\begin{itemize}
-%		\item Consensus and/or Formation stabilization
-%		\item Flocking with/without source seeking
-%	\end{itemize}	
-%	\item Complexity in solving the problem can stem through:
-%	\begin{itemize}
-%		\item Complicated dynamics of individual agents
-%		\item Commplicated Interconnection structure and intractible design algorithms for large networks
-%	\end{itemize}
-%\end{itemize}
-%\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}{Approaching the problem: Divide and Conquer}
-%\begin{block}{Available literature on}
-%\begin{itemize}
-%	\item Control of single complex agent dynamics (e.g LPV, control of differetially flat systems, dynamic inversion) 
-%	\item Distributed control of large networks of "simple" agent dynamics (e.g single and double intergrators) -> Consensus and Flocking algorithms
-%\end{itemize}
-%\end{block}	
-%\begin{block}{Consider as building blocks}
-%\begin{itemize}
-%	\item Closed-loop system $G_{\textnormal{cl}}$ with some guaranteed performance measure such as the induced $\mathcal{L}_2-\mathcal{L}_2$ or  $\mathcal{L}_2-\mathcal{L}_{\infty}$ norms
-%	\item Consensus or Flocking algorithms for "simple" systems
-%\end{itemize}
-%\end{block}
-%\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Main idea Behind Proof}
+%	\begin{align*}
+%		&\left[\begin{array}{c|c}
+%			\mathcal{A}_0(\tilde{\rho})    &  \mathcal{B}_0(\tilde{\rho})\\
+%			\hline
+%			\mathcal{C}_{10}(\tilde{\rho})    &  \mathcal{D}_{10}\\
+%			\mathcal{C}_{20}    &  \mathcal{D}_{20}\\
+%		\end{array}\right]= 
+%		\left[ 
+%		\begin{array}{cc}
+%			\Pi_0 & \\
+%			&I_{2d}\\
+%		\end{array}\right]
+%		\left[\begin{array}{c|ccc}
+%			A_G(\tilde{\rho}) & B_G(\tilde{\rho}) & B_G(\tilde{\rho})\\	
+%			\hline
+%			C_G(\tilde{\rho})  & \mathbf{0}& \mathbf{0}\\
+%			\mathbf{0}  & I_{d}       & \mathbf{0}\\
+%			\hline
+%			\mathbf{0}  & \mathbf{0}& I_{d}\\
+%			\mathbf{0}  & I_{d}       & \mathbf{0}\\
+%		\end{array}
+%		\right].
+%	\end{align*}
+\end{frame}
 \end{document}
 

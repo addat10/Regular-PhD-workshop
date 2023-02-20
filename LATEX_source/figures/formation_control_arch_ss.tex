@@ -34,24 +34,24 @@
 \node [sum,right of=input](sum_ref) {};
 \node [block, right of=input,node distance=3cm](L) {$\mathcal{L}\otimes I_d$};
 \node [sum, right of=L,node distance=2cm](sum) {};
-\node [block, right of=sum,node distance=2cm,minimum height=2.5em,minimum width=3em](G) {$\left[\begin{array}{c|c}
-\hat{A}_G     &  \hat{B}_G\\
+\node [block, right of=sum,node distance=3cm,minimum height=2.5em,minimum width=3em](G) {$\left[\begin{array}{c|c}
+\hat{A}_G(\rho)     &  \hat{B}_G(\rho)\\
 \hline
-\hat{C}_G     &  \mathbf{0}
+\hat{C}_G(\rho)     &  \mathbf{0}
 \end{array}\right]$};
-\node [output, right of=G,node distance=2cm](output) {};
-\node [output, right of=G,node distance=1.4cm](outmid) {};
-\node [block, above of=G,node distance=2cm](u_psi) {$\begin{bmatrix}0\\ \nabla \psi(y_i)\\ 0\\ \vdots \end{bmatrix}$};
+\node [output, right of=G,node distance=3cm](output) {};
+\node [output, right of=G,node distance=2.1cm](outmid) {};
+\node [block, above of=G,node distance=2.5cm](u_psi) {$\begin{bmatrix}0\\ \nabla \psi(y_i)\\ 0\\ \vdots \end{bmatrix}$};
 \node [output, below of=L,node distance=2cm](delta) {};
 
 
 % Once the nodes are placed, connecting them is easy. 
-\draw [draw,->] (input) -- node {$-\hat{r}$} (sum_ref);
+\draw [draw,->] (input) -- node {$-{r}$} (sum_ref);
 \draw [draw,->] (sum_ref) -- (L);
 \draw [draw,->] (L) -- (sum);
 \draw [draw,->] (u_psi) -| (sum);
-\draw [draw,->] (sum) -- node {$\hat{u}$} (G);
-\draw [draw,->] (G) -- node{$\hat{y}$} (output);
+\draw [draw,->] (sum) -- node {${u}$} (G);
+\draw [draw,->] (G) -- node{${y}$} (output);
 \draw [-] (outmid) |- (delta);
 \draw [->] (outmid) |- (u_psi);
 \draw [->] (delta) -| (sum_ref);

@@ -1,5 +1,5 @@
 \tikzstyle{block} = [draw, rectangle, 
-    minimum height=3em, minimum width=6em]
+minimum height=3em, minimum width=6em]
 \tikzstyle{sum} = [draw,  circle, node distance=1cm]
 \tikzstyle{input} = [coordinate]
 \tikzstyle{output} = [coordinate]
@@ -29,25 +29,21 @@
 %\end{tikzpicture}
 
 \begin{tikzpicture}[auto, node distance=2cm,>=latex']
-% We start by placing the blocks
-\node [input, name=input] {};
-\node [block, right of=input,node distance=3cm](Flockcontrol) {$\begin{array}{cc}
-   \Dot{q} =& p \\
-   \Dot{p} =&-k_d p- u
-\end{array}$};
-\node [block, right of=Flockcontrol,node distance=4cm,minimum height=2.5em,minimum width=3em](velocityloop) {$\left[\begin{array}{c|c}
-A     &  B\\
-\hline
-C     &  \mathbf{0}
-\end{array}\right]$};
-\node [output, right of=velocityloop,node distance=1.4cm](output) {};
-\node [block, below of=Flockcontrol,node distance=2cm](delta) {$u=(I+\Delta)\nabla f(y)$};
-\node[text=red, above of = Flockcontrol,xshift=-2cm,yshift=-0.5cm] (veh) {$G$};
-\draw[red, dashed] (veh.east)-|([xshift=-3.8mm]output.west)|-([yshift=-3mm]Flockcontrol.south)-|([xshift=2mm]input.west)|-(veh.west);
-% Once the nodes are placed, connecting them is easy. 
-\draw [draw,->] (input) -- node {$u$} (Flockcontrol);
-\draw [draw,->] (Flockcontrol) -- node {$\begin{bmatrix}q\\p\end{bmatrix}$} (velocityloop);
-\draw [draw,->] (velocityloop) -- node[name=outmid] {$y$} (output);
-\draw [->] (outmid) |- (delta);
-\draw [-] (delta) -| (input);
+	% We start by placing the blocks
+	\node [input, name=input] {};
+	\node [block, right of=input,node distance=2.5cm](Flockcontrol) {$\begin{array}{cc}
+			\Dot{q} =& p \\
+			\Dot{p} =&-cp-u
+		\end{array}$};
+	\node [block, right of=Flockcontrol,node distance=4cm,minimum height=2.5em,minimum width=3em](velocityloop) {$\begin{bmatrix}G_{\textnormal{veh}}&&\\&\ddots&\\&&G_{\textnormal{veh}}\end{bmatrix}$};
+	\node [output, right of=velocityloop,node distance=3cm](output) {};
+	\node [block, below of=Flockcontrol,node distance=2cm, xshift=2cm](delta) {$u=\nabla f(y)=\nabla \left(y^T\mathcal{L}_{(d)}y + \sum_{i \in \mathcal{V}_l}\psi(y_i)\right)$};
+%	\node[text=red, above left= 5mm and 0.5mm of Flockcontrol] (veh) {$G$};
+%	\draw[red, dashed] (veh.east)-|([xshift=-7.8mm]output.west)|-([yshift=-5mm]Flockcontrol.south)-|([xshift=2mm]input.west)|-(veh.west);
+	% Once the nodes are placed, connecting them is easy. 
+	\draw [draw,->] (input) -- node {$u$} (Flockcontrol);
+	\draw [draw,->] (Flockcontrol) -- node {$\begin{bmatrix}q\\p\end{bmatrix}$} (velocityloop);
+	\draw [draw,->] (velocityloop) -- node[name=outmid,xshift=3mm] {$y$} (output);
+	\draw [-] (outmid) |- (delta);
+	\draw [-] (delta) -| (input);
 \end{tikzpicture}
